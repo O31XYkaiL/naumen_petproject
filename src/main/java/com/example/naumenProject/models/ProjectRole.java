@@ -9,7 +9,6 @@ public enum ProjectRole {
     TEAM_LEAD("TeamLead"),
 
     BACKEND("Backend"),
-
     DESIGNER("Designer"),
     SCIENTIST("Scientist");
 

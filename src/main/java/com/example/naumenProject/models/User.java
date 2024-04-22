@@ -6,6 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.util.HashSet;
+import java.util.Set;
+
+
 @Entity
 @Table(name = "block1_users")
 public class User
@@ -30,6 +34,12 @@ public class User
 
     @Column(name = "team_role")
     private ProjectRole roleInProject;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role_team", joinColumns = @JoinColumn(name="user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> role = new HashSet<>();
+
 
 
     public User( String email, String password, String firstName, String lastName, String academicGroup, int voteCount, ProjectRole roleInProject) {
@@ -100,4 +110,16 @@ public class User
     public void setRoleInProject(ProjectRole roleInProject) {
         this.roleInProject = roleInProject;
     }
+
+    public Set<Role> getRole() {
+        return role;
+    }
+
+    public void setRole(Set<Role> role) {
+        this.role = role;
+    }
+
+    public void setActive(boolean b) {
+    }
+
 }

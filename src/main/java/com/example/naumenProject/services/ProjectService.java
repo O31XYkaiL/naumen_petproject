@@ -180,7 +180,7 @@ public class ProjectService {
     public List<Project> filterProjectsByCategoryAndSubcategory(String category, String subcategory) {
         log.info("Filtering projects by category and subcategory: {}, {}", category, subcategory);
 
-        return projectRepository.findByCategoryAndSubcategory(category, subcategory);
+        return projectRepository.findByCategory(category, subcategory);
     }
 
     /**

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ProjectRepository extends CrudRepository<Project, Long>
 {
-    List<Project> findByCategoryAndSubcategory(String category, String subcategory);
+    List<Project> findByCategory(String category, String subcategory);
 }

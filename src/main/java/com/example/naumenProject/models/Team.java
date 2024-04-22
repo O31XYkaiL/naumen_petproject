@@ -1,8 +1,6 @@
 package com.example.naumenProject.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
@@ -74,23 +72,4 @@ public class Team
         this.members = members;
     }
 
-
-
-    //    public boolean equals(Object instance)
-//    {
-//        if (instance == null)
-//            return false;
-//        if (!(instance instanceof Team))
-//            return false;
-//        Team other = (Team)instance;
-//        if (!(word.getId().equals(other.getWord().getId())))
-//            return false;
-//        if (!(training.getId().equals(other.getTraining().getId())))
-//            return false;
-//        if (!(repeatDays == other.getRepeatDays()))
-//            return false;
-//        if(!(lastStudyDate.equals(other.getLastStudyDate())))
-//            return false;
-//        return true;
-//    }
 }
