@@ -93,7 +93,7 @@ public class ProjectService {
 
         if (project != null && coverImage != null && !coverImage.isEmpty()) {
             try {
-                String imageDirPath = "C:\\Users\\koziy\\IdeaProjects\\spring2023\\src\\images";
+                String imageDirPath = "images";
                 String imageName = UUID.randomUUID() + ".jpg";
                 Path imagePath = Path.of(imageDirPath, imageName);
 
@@ -125,7 +125,7 @@ public class ProjectService {
 
         if (project != null && gameplayVideo != null && !gameplayVideo.isEmpty()) {
             try {
-                String tempDirPath = "C:\\Users\\koziy\\IdeaProjects\\spring2023\\src\\videos";
+                String tempDirPath = "videos";
                 String tempVideoPath = tempDirPath + "\\" + UUID.randomUUID() + ".mp4";
                 Files.createDirectories(Path.of(tempDirPath));
 
@@ -196,7 +196,7 @@ public class ProjectService {
 
         if (project != null && archiveFile != null && !archiveFile.isEmpty()) {
             try {
-                String tempDirPath = "C:\\Users\\koziy\\IdeaProjects\\spring2023\\src\\archives";
+                String tempDirPath = "archives";
                 String tempExtractedDirPath = tempDirPath + "\\" + UUID.randomUUID();
                 Files.createDirectories(Path.of(tempExtractedDirPath));
 
