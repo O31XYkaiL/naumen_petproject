@@ -83,12 +83,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     // public UserDetails loadUserByUsername(String firstName, String lastName) throws UsernameNotFoundException {
-        String firstName = userName.split(" ")[0];
-        String lastName = userName.split(" ")[1];
-        User myUser = userRepository.findUserByLastNameAndFirstName(firstName, lastName);
-        return new org.springframework.security.core.userdetails.User(myUser.getFirstName(), myUser.getPassword(),
+        User myUser = userRepository.findUserByUsername(username);
+        return new org.springframework.security.core.userdetails.User(myUser.getUsername(), myUser.getPassword(),
                 mapRolesToAthorities(myUser.getRole()));
     }
 
@@ -97,7 +95,7 @@ public class UserService implements UserDetailsService {
     }
 
     public String addUser(User user) throws Exception{
-        User userFromDb = userRepository.findUserByLastNameAndFirstName(user.getFirstName(), user.getLastName());
+        User userFromDb = userRepository.findUserByUsername(user.getUsername());
         if(userFromDb != null){
             throw new Exception("user exist");
         }

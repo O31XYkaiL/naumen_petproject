@@ -88,14 +88,14 @@ public class TeamService {
      * @param role Роль, которую нужно назначить студенту (не тимлида).
      * @return Обновленный объект команды или null, если операция не выполнена.
      */
-    public Team addUserToTeamWithRole(Long teamId, String lastName, String firstName, String role) {
+    public Team addUserToTeamWithRole(Long teamId, String username, String role) {
         Team team = teamRepository.findById(teamId).orElse(null);
 
         if (team == null || !ProjectRole.TEAM_LEAD.equals(team.getTeamLead())) {
             return null;
         }
 
-        User userToAdd = userRepository.findUserByLastNameAndFirstName(lastName, firstName);
+        User userToAdd = userRepository.findUserByUsername(username);
 
         if (userToAdd == null || ProjectRole.TEAM_LEAD.equals(userToAdd.getRoleInProject())) {
             return null;

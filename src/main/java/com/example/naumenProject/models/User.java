@@ -19,11 +19,14 @@ public class User
     private Long id;
     private Long userId;
 
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
     @Column(name = "user_email")
     private String email;
-
-    @Column(name = "user_password")
-    private String password;
 
     @Column(name = "user_name")
     private String firstName;
@@ -42,12 +45,12 @@ public class User
 
 
 
-    public User( String email, String password, String firstName, String lastName, String academicGroup, int voteCount, ProjectRole roleInProject) {
-        this.email = email;
+    public User( String username, String email, String password, String firstName, String lastName, String academicGroup, int voteCount) {
+        this.username = username;
         this.password = password;
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.roleInProject = roleInProject;
     }
 
     public User()
@@ -79,12 +82,20 @@ public class User
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getFirstName() {

@@ -17,15 +17,16 @@ public class SpringSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/registrasion", "/login", "/logout").permitAll()
+                        .requestMatchers("/registration", "/login", "/logout").permitAll()
                         .requestMatchers("/delete/**").hasRole("ADMIN")
                         .requestMatchers("/create/**").hasAuthority("TEAMLEAD")
                         .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults());
         return http.build();
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
 }

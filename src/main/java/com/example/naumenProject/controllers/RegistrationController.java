@@ -14,23 +14,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.Collections;
 
 @Controller
-public class RefistrationController {
+public class RegistrationController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping("/registration")
-    public String registration(){
+    public String registration() {
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Model model){
-        try{
-
+    public String addUser(User user, Model model) {
+        try {
             userService.addUser(user);
             return "redirect:/login";
-        }
-        catch (Exception ex){
-            model.addAttribute("message", "User exist");
+        } catch (Exception ex) {
+            model.addAttribute("message", "User exists");
             return "registration";
         }
     }
