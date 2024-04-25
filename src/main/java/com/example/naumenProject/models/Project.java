@@ -125,4 +125,12 @@ public class Project
     public void setProjectArchivePath(String projectArchivePath) {
         this.projectArchivePath = projectArchivePath;
     }
+
+    public User getCreator() {
+        return null;
+    }
+
+    public void setCreator(User creator) {
+        // this.creator = creator;
+    }
 }

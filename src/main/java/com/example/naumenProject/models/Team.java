@@ -72,4 +72,10 @@ public class Team
         this.members = members;
     }
 
+    public ProjectRole getTeamLead() {
+        // TODO: добавить тимлида в класс команды
+        // TODO: тимлид по идее должен вернуть User, не Project Role?
+        return null;
+    }
+
 }

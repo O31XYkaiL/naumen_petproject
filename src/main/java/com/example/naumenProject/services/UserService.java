@@ -47,29 +47,29 @@ public class UserService implements UserDetailsService {
      * @param id ID студента.
      * @return Объект студента или null, если студент не найден.
      */
-    public User getStudentById(Long id) {
-        log.info("Getting student by ID: {}", id);
+    public User getUserById(Long id) {
+        log.info("Getting user by ID: {}", id);
         return userRepository.findById(id).orElse(null);
     }
 
     /**
      * Создать нового студента.
      *
-     * @param student Объект студента, который будет создан.
+     * @param user Объект студента, который будет создан.
      */
-    public void createStudent(User student) {
-        log.info("Creating a new student: {}", student);
-        userRepository.save(student);
+    public void createUser(User user) {
+        log.info("Creating a new user: {}", user);
+        userRepository.save(user);
     }
 
     /**
      * Обновить информацию о студенте.
      *
-     * @param student Объект студента, который будет обновлен.
+     * @param user Объект студента, который будет обновлен.
      */
-    public void updateStudent(User student) {
-        log.info("Updating student: {}", student);
-        userstudentRepository.save(student);
+    public void updateUser(User user) {
+        log.info("Updating user: {}", user);
+        userRepository.save(user);
     }
 
     /**
@@ -77,24 +77,27 @@ public class UserService implements UserDetailsService {
      *
      * @param id ID студента, который будет удален.
      */
-    public void deleteStudent(Long id) {
-        log.info("Deleting student by ID: {}", id);
+    public void deleteUser(Long id) {
+        log.info("Deleting user by ID: {}", id);
         userRepository.deleteById(id);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String firstName, String lastName) throws UsernameNotFoundException {
-        User myUser = userRepository.findStudentByLastNameAndFirstName(firstName, lastName);
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    // public UserDetails loadUserByUsername(String firstName, String lastName) throws UsernameNotFoundException {
+        String firstName = userName.split(" ")[0];
+        String lastName = userName.split(" ")[1];
+        User myUser = userRepository.findUserByLastNameAndFirstName(firstName, lastName);
         return new org.springframework.security.core.userdetails.User(myUser.getFirstName(), myUser.getPassword(),
                 mapRolesToAthorities(myUser.getRole()));
     }
 
     private List<? extends GrantedAuthority> mapRolesToAthorities(Set<Role> roles) {
-        return roles.stream().map(r -> (new SimpleGrantedAuthority("ROLE_" + r.name())).toList());
+        return roles.stream().map(r -> (new SimpleGrantedAuthority("ROLE_" + r.name()))).toList();
     }
 
     public String addUser(User user) throws Exception{
-        User userFromDb = userRepository.findStudentByLastNameAndFirstName(user.getFirstName(), user.getLastName());
+        User userFromDb = userRepository.findUserByLastNameAndFirstName(user.getFirstName(), user.getLastName());
         if(userFromDb != null){
             throw new Exception("user exist");
         }

@@ -1,10 +1,10 @@
 package com.example.naumenProject.services;
 
-import com.webagregator.webagregator.app.repositories.StudentRepository;
-import com.webagregator.webagregator.app.repositories.TeamRepository;
-import com.webagregator.webagregator.domain.ProjectRole;
-import com.webagregator.webagregator.domain.Student;
-import com.webagregator.webagregator.domain.Team;
+import com.example.naumenProject.repositories.UserRepository;
+import com.example.naumenProject.repositories.TeamRepository;
+import com.example.naumenProject.models.ProjectRole;
+import com.example.naumenProject.models.User;
+import com.example.naumenProject.models.Team;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class TeamService {
     private final TeamRepository teamRepository;
-    private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TeamService(TeamRepository teamRepository, StudentRepository studentRepository) {
+    public TeamService(TeamRepository teamRepository, UserRepository userRepository) {
         this.teamRepository = teamRepository;
-        this.studentRepository = studentRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -88,24 +88,25 @@ public class TeamService {
      * @param role Роль, которую нужно назначить студенту (не тимлида).
      * @return Обновленный объект команды или null, если операция не выполнена.
      */
-    public Team addStudentToTeamWithRole(Long teamId, String lastName, String firstName, String role) {
+    public Team addUserToTeamWithRole(Long teamId, String lastName, String firstName, String role) {
         Team team = teamRepository.findById(teamId).orElse(null);
 
         if (team == null || !ProjectRole.TEAM_LEAD.equals(team.getTeamLead())) {
             return null;
         }
 
-        Student studentToAdd = studentRepository.findStudentByLastNameAndFirstName(lastName, firstName);
+        User userToAdd = userRepository.findUserByLastNameAndFirstName(lastName, firstName);
 
-        if (studentToAdd == null || ProjectRole.TEAM_LEAD.equals(studentToAdd.getRoleInProject())) {
+        if (userToAdd == null || ProjectRole.TEAM_LEAD.equals(userToAdd.getRoleInProject())) {
             return null;
         }
 
-        team.getTeamMembers().add(studentToAdd);
-        studentToAdd.setRoleInProject(ProjectRole.valueOf(role));
+        // TODO: привести members к типу List<User>
+        // team.getMembers().add(userToAdd);
+        userToAdd.setRoleInProject(ProjectRole.valueOf(role));
 
         teamRepository.save(team);
-        studentRepository.save(studentToAdd);
+        userRepository.save(userToAdd);
 
         return team;
     }

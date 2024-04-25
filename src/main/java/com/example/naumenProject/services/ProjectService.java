@@ -2,6 +2,7 @@ package com.example.naumenProject.services;
 
 
 import com.example.naumenProject.models.Project;
+import com.example.naumenProject.models.ProjectRole;
 import com.example.naumenProject.models.User;
 import com.example.naumenProject.repositories.ProjectRepository;
 import com.example.naumenProject.repositories.UserRepository;
@@ -146,20 +147,20 @@ public class ProjectService {
     /**
      * Редактировать проект, если студент является тимлидом и это его проект.
      *
-     * @param studentId ID студента.
+     * @param userId ID студента.
      * @param projectId ID проекта.
      * @param updatedProject Обновленные данные проекта.
      * @return Обновленный объект проекта или null, если редактирование не выполнено.
      */
-    public Project editProjectByTeamLeader(Long studentId, Long projectId, Project updatedProject) {
-        Student student = studentRepository.findById(studentId).orElse(null);
+    public Project editProjectByTeamLeader(Long userId, Long projectId, Project updatedProject) {
+        User user = userRepository.findById(userId).orElse(null);
         Project project = projectRepository.findById(projectId).orElse(null);
 
-        if (student == null || project == null || !student.equals(project.getCreator())) {
+        if (user == null || project == null || !user.equals(project.getCreator())) {
             return null;
         }
 
-        if (ProjectRole.TEAM_LEAD.getRole().equalsIgnoreCase(student.getRoleInProject().getRole())) {
+        if (ProjectRole.TEAM_LEAD.getRole().equalsIgnoreCase(user.getRoleInProject().getRole())) {
             return null;
         }
 
@@ -177,11 +178,11 @@ public class ProjectService {
      * @param subcategory Подкатегория проекта.
      * @return Список проектов, соответствующих заданным категории и подкатегории.
      */
-    public List<Project> filterProjectsByCategoryAndSubcategory(String category, String subcategory) {
-        log.info("Filtering projects by category and subcategory: {}, {}", category, subcategory);
+    // public List<Project> filterProjectsByCategoryAndSubcategory(String category, String subcategory) {
+    //     log.info("Filtering projects by category and subcategory: {}, {}", category, subcategory);
 
-        return projectRepository.findByCategory(category, subcategory);
-    }
+    //     return projectRepository.findByCategory(category, subcategory);
+    // }
 
     /**
      * Загружает архив проекта, разархивирует его и сохраняет ссылку в базе данных.
