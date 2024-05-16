@@ -65,4 +65,33 @@ public class WebController
 
         return "redirect:/projects";
     }
+
+    @GetMapping(value = "/ratings")
+    public String getRatingsPage(Model model, Authentication authentication) {
+        String username = authentication.getName();
+
+        User currentUser = userRepository.findUserByUsername(username);
+        var projects = projectService.getAllProjects();
+
+        var projectNamesToRatings = projects.stream().collect(Collectors.toMap(Project::getProjectName, Project::getProjectRating));
+        var sortedProjects = projectNamesToRatings.entrySet().stream().sorted((p1, p2) -> p2.getValue().compareTo(p1.getValue())).collect(Collectors.toList());
+
+        model.addAttribute("user", currentUser);
+        model.addAttribute("projects", sortedProjects);
+
+        return "ratings";
+    }
+
+    @PostMapping(value = "/updateRating")
+    public String updateRating(@RequestParam("projectName") String projectName, @RequestParam("rating") Integer rating, Authentication authentication) {
+        var projects = projectService.getAllProjects();
+        var project = projects.stream().filter(p -> p.getProjectName().equals(projectName)).findFirst().orElse(null);
+
+        if (project != null) {
+            project.setProjectRating(rating);
+            projectService.updateProject(project);
+        }
+
+        return "redirect:/ratings";
+    }
 }

@@ -38,6 +38,9 @@ public class Project
     @Column(name = "project_archive")
     private String projectArchivePath;
 
+    @Column(name = "project_rating")
+    private Integer projectRating;
+
 
     public Project()
     {
@@ -52,6 +55,7 @@ public class Project
         this.projectCategory = projectCategory;
         this.repositoryLink = repositoryLink;
         this.projectArchivePath = projectArchivePath;
+        this.projectRating = 0;
     }
 
     public Long getId() {
@@ -132,5 +136,17 @@ public class Project
 
     public void setCreator(User creator) {
         // this.creator = creator;
+    }
+
+    public Integer getProjectRating() {
+        return projectRating;
+    }
+
+    public void setProjectRating(Integer projectRating) {
+        this.projectRating = projectRating;
+    }
+
+    public void addProjectRating() {
+        this.projectRating += 1;
     }
 }

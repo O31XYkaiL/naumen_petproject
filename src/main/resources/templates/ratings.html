@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Рейтинги</title>
+</head>
+<body>
+    <h1>Рейтинги</h1>
+    <p>Логин: [[${user.username}]]</p>
+
+    <!-- List of ratings using java spring, project is dict<str, int> -->
+    <table border="1">
+        <tr>
+            <th>Проект</th>
+            <th>Рейтинг</th>
+        </tr>
+        <tr th:each="rating : ${projects}">
+            <td th:text="${rating.key}"></td>
+            <td th:text="${rating.value}"></td>
+        </tr>
+    </table>
+
+    <h1>Изменить рейтинг</h1>
+    <form th:action="@{/updateRating}" method="post">
+        <label for="projectName">Проект: <input type="text" id="projectName" name="projectName"></label><br>
+        <label for="rating">Рейтинг: <input type="text" id="rating" name="rating"></label><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
