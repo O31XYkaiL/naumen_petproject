@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Поиск</title>
+</head>
+<body>
+    <h1>Поиск</h1>
+    <p>Логин: [[${user.username}]]</p>
+
+    <h1>Поиск по проектам</h1>
+    <form th:action="@{/search}" method="get">
+        <label for="search">Проект: <input type="text" id="search" name="search"></label><br>
+        <input type="submit" value="Поиск">
+    </form>
+
+    <h1>Результаты поиска</h1>
+    <table border="1">
+        <tr>
+            <th>Проект</th>
+            <th>Описание</th>
+        </tr>
+        <tr th:each="project : ${projects}">
+            <td th:text="${project.getProjectName()}"></td>
+            <td th:text="${project.getProjectDescription()}"></td>
+        </tr>
+    </table>
+</body>
+</html>
