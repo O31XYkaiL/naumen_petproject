@@ -41,13 +41,17 @@ public class Project
     @Column(name = "project_rating")
     private Integer projectRating;
 
+    @Column(name = "project_creator")
+    private String projectCreator;
+
 
     public Project()
     {
     }
 
-    public Project(Long projectId, String projectName, String projectDescription, String gameplayVideo, String coverImage, String projectCategory, String repositoryLink, String projectArchivePath) {
+    public Project(Long projectId, String projectCreator, String projectName, String projectDescription, String gameplayVideo, String coverImage, String projectCategory, String repositoryLink, String projectArchivePath) {
         this.projectId = projectId;
+        this.projectCreator = projectCreator;
         this.projectName = projectName;
         this.projectDescription = projectDescription;
         this.gameplayVideo = gameplayVideo;
@@ -72,6 +76,14 @@ public class Project
 
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
+    }
+
+    public String getProjectCreator() {
+        return projectCreator;
+    }
+
+    public void setProjectCreator(String projectCreator) {
+        this.projectCreator = projectCreator;
     }
 
     public String getProjectName() {

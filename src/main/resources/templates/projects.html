@@ -2,12 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Проекты</title>
+    <title>[[${title}]]</title>
 </head>
 <body>
-    <h1>Проекты</h1>
+    <h1>[[${title}]]</h1>
     <p>Логин: [[${user.username}]]</p>
-    <p>Проекты: [[${projects}]]</p>
+    <table border="1">
+        <tr>
+            <th>Проект</th>
+            <th>Создатель</th>
+            <th>Описание</th>
+            <th>Рейтинг</th>
+        </tr>
+        <tr th:each="project : ${projects}">
+            <td th:text="${project.getProjectName()}"></td>
+            <td th:text="${project.getProjectCreator()}"></td>
+            <td th:text="${project.getProjectDescription()}"></td>
+            <td th:text="${project.getProjectRating()}"></td>
+        </tr>
+    </table>
 
     <h1>Создать проект</h1>
     <form th:action="@{/createProject}" method="post">

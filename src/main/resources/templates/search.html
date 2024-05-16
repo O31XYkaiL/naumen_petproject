@@ -18,11 +18,15 @@
     <table border="1">
         <tr>
             <th>Проект</th>
+            <th>Создатель</th>
             <th>Описание</th>
+            <th>Рейтинг</th>
         </tr>
         <tr th:each="project : ${projects}">
             <td th:text="${project.getProjectName()}"></td>
+            <td th:text="${project.getProjectCreator()}"></td>
             <td th:text="${project.getProjectDescription()}"></td>
+            <td th:text="${project.getProjectRating()}"></td>
         </tr>
     </table>
 </body>

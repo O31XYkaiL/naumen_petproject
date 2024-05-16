@@ -49,10 +49,27 @@ public class WebController {
         User currentUser = userRepository.findUserByUsername(username);
 
         var projects = projectService.getAllProjects();
-        var projectNames = projects.stream().map(Project::getProjectName).collect(Collectors.toList());
 
+        model.addAttribute("title", "Проекты");
         model.addAttribute("user", currentUser);
-        model.addAttribute("projects", projectNames);
+        model.addAttribute("projects", projects);
+
+        return "projects";
+    }
+
+    @GetMapping(value = "/projectsByUser")
+    public String getProjectsByUser(Model model, Authentication authentication) {
+        String username = authentication.getName();
+
+        User currentUser = userRepository.findUserByUsername(username);
+
+        var projects = projectService.getAllProjects();
+        var userProjects = projects.stream().filter(p -> p.getProjectCreator().equals(currentUser.getUsername()))
+                .collect(Collectors.toList());
+
+        model.addAttribute("title", "Проекты от " + currentUser.getUsername());
+        model.addAttribute("user", currentUser);
+        model.addAttribute("projects", userProjects);
 
         return "projects";
     }
@@ -60,8 +77,11 @@ public class WebController {
     @PostMapping(value = "/createProject")
     public String createProject(@RequestParam("name") String name, @RequestParam("description") String description,
             Authentication authentication) {
+        String username = authentication.getName();
 
-        Project project = new Project(UUID.randomUUID().getMostSignificantBits(), name, description, "", "", "", "",
+        User currentUser = userRepository.findUserByUsername(username);
+
+        Project project = new Project(UUID.randomUUID().getMostSignificantBits(), username, name, description, "", "", "", "",
                 "");
 
         projectService.createProject(project);
@@ -117,7 +137,8 @@ public class WebController {
         if (search != null && !search.isEmpty()) {
             filteredProjects = projects.stream()
                     .filter(p -> p.getProjectName() != null && p.getProjectName().contains(search)
-                            || p.getProjectDescription() != null && p.getProjectDescription().contains(search))
+                            || p.getProjectDescription() != null && p.getProjectDescription().contains(search)
+                            || p.getProjectCreator() != null && p.getProjectCreator().contains(search))
                     .collect(Collectors.toList());
         } else {
             filteredProjects = projects;
