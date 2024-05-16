@@ -43,6 +43,12 @@ public class ProjectService {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
     }
+
+    public List<Project> getAllProjects() {
+        log.info("Getting all projects");
+        var iterable = projectRepository.findAll();
+        return (List<Project>) iterable;
+    }
     /**
      * Получить проект по ID.
      *
