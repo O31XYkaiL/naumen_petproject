@@ -7,9 +7,10 @@ import lombok.Getter;
 public enum ProjectRole {
 
     TEAM_LEAD("TeamLead"),
-
+    FRONTEND("Frontend"),
     BACKEND("Backend"),
     DESIGNER("Designer"),
+    ANALYST("Analyst"),
     SCIENTIST("Scientist");
 
     private final String role;
