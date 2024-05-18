@@ -44,6 +44,14 @@ public class ProjectService {
         this.userRepository = userRepository;
     }
 
+    public List<Project> searchProjects(String query) {
+        return projectRepository.searchProjects(query);
+    }
+
+    public List<Project> getProjectsByUser(String username) {
+        return projectRepository.getProjectsByUser(username);
+    }
+
     public List<Project> getAllProjects() {
         log.info("Getting all projects");
         var iterable = projectRepository.findAll();

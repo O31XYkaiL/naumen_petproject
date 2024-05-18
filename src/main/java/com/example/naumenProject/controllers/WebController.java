@@ -63,9 +63,7 @@ public class WebController {
 
         User currentUser = userRepository.findUserByUsername(username);
 
-        var projects = projectService.getAllProjects();
-        var userProjects = projects.stream().filter(p -> p.getProjectCreator().equals(currentUser.getUsername()))
-                .collect(Collectors.toList());
+        var userProjects = projectService.getProjectsByUser(username);
 
         model.addAttribute("title", "Проекты от " + currentUser.getUsername());
         model.addAttribute("user", currentUser);
@@ -122,29 +120,19 @@ public class WebController {
     }
 
     @GetMapping(value = "/search")
-    public String search(@RequestParam(value = "search", required = false) String search, Model model,
+    public String search(@RequestParam(value = "query", required = false) String query, Model model,
             Authentication authentication) {
         String username = authentication.getName();
 
-        // Retrieve the current user
         User currentUser = userRepository.findUserByUsername(username);
 
-        // Get all projects
-        List<Project> projects = projectService.getAllProjects();
-
-        // Filter projects based on the search term if provided
         List<Project> filteredProjects;
-        if (search != null && !search.isEmpty()) {
-            filteredProjects = projects.stream()
-                    .filter(p -> p.getProjectName() != null && p.getProjectName().contains(search)
-                            || p.getProjectDescription() != null && p.getProjectDescription().contains(search)
-                            || p.getProjectCreator() != null && p.getProjectCreator().contains(search))
-                    .collect(Collectors.toList());
+        if (query != null && !query.isEmpty()) {
+            filteredProjects = projectService.searchProjects(query);
         } else {
-            filteredProjects = projects;
+            filteredProjects = projectService.getAllProjects();
         }
 
-        // Add current user and filtered projects to the model
         model.addAttribute("user", currentUser);
         model.addAttribute("projects", filteredProjects);
 
