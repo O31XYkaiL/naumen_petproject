@@ -1,10 +1,13 @@
 package com.example.naumenProject.models;
 
 
-import jakarta.persistence.*;
+import java.io.File;
 
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "block1_project")
@@ -160,5 +163,9 @@ public class Project
 
     public void addProjectRating() {
         this.projectRating += 1;
+    }
+
+    public String getUploadDir() {
+        return System.getProperty("user.dir") + File.separator + "uploads" + File.separator + String.valueOf(getId()) + File.separator;
     }
 }

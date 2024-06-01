@@ -1,9 +1,13 @@
 package com.example.naumenProject.controllers;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -107,7 +111,7 @@ public class WebController {
                 return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body("Only zip files are allowed.");
             }
 
-            String uploadDir = System.getProperty("user.dir") + File.separator + "uploads" + File.separator + String.valueOf(id) + File.separator;
+            String uploadDir = project.getUploadDir();
             String originalFilename = archiveFile.getOriginalFilename();
             String filePath = uploadDir + originalFilename;
 
@@ -177,5 +181,48 @@ public class WebController {
         model.addAttribute("projects", filteredProjects);
 
         return "search";
+    }
+
+    @GetMapping(value = "/play")
+    public String play(@RequestParam("id") Long id, Model model, Authentication authentication) {
+        String username = authentication.getName();
+        User currentUser = userRepository.findUserByUsername(username);
+        var project = projectService.getProjectById(id);
+
+        try {
+            File archiveFile = new File(project.getProjectArchivePath());
+            File destDir = new File(project.getUploadDir() + "unzipped");
+
+            if (!destDir.exists()) {
+                destDir.mkdirs();
+            }
+
+            byte[] buffer = new byte[1024];
+            ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(archiveFile));
+            ZipEntry entry = zipInputStream.getNextEntry();
+
+            while (entry != null) {
+                String entryPath = destDir.getAbsolutePath() + File.separator + entry.getName();
+                File entryFile = new File(entryPath);
+
+                if (entry.isDirectory()) {
+                    entryFile.mkdirs();
+                } else {
+                    FileOutputStream fos = new FileOutputStream(entryFile);
+                    int len;
+                    while ((len = zipInputStream.read(buffer)) > 0) {
+                        fos.write(buffer, 0, len);
+                    }
+                    fos.close();
+                }
+                zipInputStream.closeEntry();
+                entry = zipInputStream.getNextEntry();
+            }
+            zipInputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/games/" + id + "/unzipped/index.html";
     }
 }
