@@ -1,12 +1,12 @@
 package com.example.naumenProject.repositories;
 
-import com.example.naumenProject.models.Project;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.example.naumenProject.models.Project;
 
 
 public interface ProjectRepository extends JpaRepository<Project, Long>
@@ -19,4 +19,10 @@ public interface ProjectRepository extends JpaRepository<Project, Long>
 
     @Query("SELECT p FROM Project p WHERE p.projectCreator = :username")
     List<Project> getProjectsByUser(@Param("username") String username);
+
+    @Query("SELECT p FROM Project p ORDER BY p.projectRating DESC")
+    List<Project> getProjectsSortedByRating();
+
+    @Query("SELECT p FROM Project p WHERE p.projectName = :name")
+    Project getProjectByName(@Param("name") String name);
 }

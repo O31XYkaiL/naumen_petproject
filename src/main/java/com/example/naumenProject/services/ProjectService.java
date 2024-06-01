@@ -1,16 +1,6 @@
 package com.example.naumenProject.services;
 
 
-import com.example.naumenProject.models.Project;
-import com.example.naumenProject.models.ProjectRole;
-import com.example.naumenProject.models.User;
-import com.example.naumenProject.repositories.ProjectRepository;
-import com.example.naumenProject.repositories.UserRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,6 +10,18 @@ import java.util.List;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.naumenProject.models.Project;
+import com.example.naumenProject.models.ProjectRole;
+import com.example.naumenProject.models.User;
+import com.example.naumenProject.repositories.ProjectRepository;
+import com.example.naumenProject.repositories.UserRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -50,6 +52,14 @@ public class ProjectService {
 
     public List<Project> getProjectsByUser(String username) {
         return projectRepository.getProjectsByUser(username);
+    }
+
+    public List<Project> getProjectsSortedByRating() {
+        return projectRepository.getProjectsSortedByRating();
+    }
+
+    public Project getProjectByName(String name) {
+        return projectRepository.getProjectByName(name);
     }
 
     public List<Project> getAllProjects() {

@@ -13,9 +13,9 @@
             <th>Проект</th>
             <th>Рейтинг</th>
         </tr>
-        <tr th:each="rating : ${projects}">
-            <td th:text="${rating.key}"></td>
-            <td th:text="${rating.value}"></td>
+        <tr th:each="project : ${projects}">
+            <td th:text="${project.getProjectName()}"></td>
+            <td th:text="${project.getProjectRating()}"></td>
         </tr>
     </table>
 

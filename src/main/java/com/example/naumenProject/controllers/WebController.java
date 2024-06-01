@@ -1,24 +1,20 @@
 package com.example.naumenProject.controllers;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.List;
-import java.util.ArrayList;
-
-import com.example.naumenProject.services.ProjectService;
-
-import org.springframework.ui.Model;
-import com.example.naumenProject.models.User;
 import com.example.naumenProject.models.Project;
+import com.example.naumenProject.models.User;
 import com.example.naumenProject.repositories.UserRepository;
-
-import org.springframework.security.core.Authentication;
+import com.example.naumenProject.services.ProjectService;
 
 @Controller
 public class WebController {
@@ -87,20 +83,22 @@ public class WebController {
         return "redirect:/projects";
     }
 
+    @PostMapping(value = "/deleteProject")
+    public String deleteProject(@RequestParam("id") Long id, Authentication authentication) {
+        projectService.deleteProject(id);
+
+        return "redirect:/projects";
+    }
+
     @GetMapping(value = "/ratings")
     public String getRatingsPage(Model model, Authentication authentication) {
         String username = authentication.getName();
 
         User currentUser = userRepository.findUserByUsername(username);
-        var projects = projectService.getAllProjects();
-
-        var projectNamesToRatings = projects.stream()
-                .collect(Collectors.toMap(Project::getProjectName, Project::getProjectRating));
-        var sortedProjects = projectNamesToRatings.entrySet().stream()
-                .sorted((p1, p2) -> p2.getValue().compareTo(p1.getValue())).collect(Collectors.toList());
+        var projects = projectService.getProjectsSortedByRating();
 
         model.addAttribute("user", currentUser);
-        model.addAttribute("projects", sortedProjects);
+        model.addAttribute("projects", projects);
 
         return "ratings";
     }
@@ -108,8 +106,7 @@ public class WebController {
     @PostMapping(value = "/updateRating")
     public String updateRating(@RequestParam("projectName") String projectName, @RequestParam("rating") Integer rating,
             Authentication authentication) {
-        var projects = projectService.getAllProjects();
-        var project = projects.stream().filter(p -> p.getProjectName().equals(projectName)).findFirst().orElse(null);
+        var project = projectService.getProjectByName(projectName);
 
         if (project != null) {
             project.setProjectRating(rating);
