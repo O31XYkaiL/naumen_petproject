@@ -10,10 +10,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import com.example.naumenProject.models.Team;
+import com.example.naumenProject.repositories.ProjectRepository;
 import com.example.naumenProject.repositories.TeamRepository;
 import com.example.naumenProject.services.TeamService;
 import jakarta.servlet.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -33,12 +35,14 @@ import com.example.naumenProject.services.ProjectService;
 @Controller
 public class WebController {
     private final UserRepository userRepository;
+    public final ProjectRepository projectRepository;
     private final ProjectService projectService;
     private final TeamService teamService;
 
     @Autowired
-    public WebController(UserRepository userRepository, ProjectService projectService, TeamService teamService) {
+    public WebController(UserRepository userRepository, ProjectRepository projectRepository, ProjectService projectService, TeamService teamService) {
         this.userRepository = userRepository;
+        this.projectRepository = projectRepository;
         this.projectService = projectService;
         this.teamService = teamService;
     }
@@ -287,5 +291,27 @@ public class WebController {
         projectService.createProject(project);
 
         return "redirect:/";
+    }
+
+    @GetMapping(value = "/categories")
+    public String getCategoryPage(Model model, Authentication authentication) {
+
+
+        return "categories";
+    }
+
+    @GetMapping(value = "/projectByCategory")
+    public String getProjectByCategory(Model model, Authentication authentication, String category) {
+       // String username = authentication.getNameCategory();
+
+        //Project category = projectRepository.findProjectsByProjectCategory(nameOfCategory);
+
+        var projectsByCategory = projectService.getProjectsByCategory(category);
+
+        model.addAttribute("title", "Проекты категории " + category);
+        model.addAttribute("category", category);
+        model.addAttribute("projects", projectsByCategory);
+        System.out.println(projectsByCategory);
+        return "categories";
     }
 }
