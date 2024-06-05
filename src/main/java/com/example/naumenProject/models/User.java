@@ -35,7 +35,7 @@ public class User
 
 
     @Column(name = "team_role")
-    private ProjectRole roleInProject;
+    private Integer roleInProject;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role_team", joinColumns = @JoinColumn(name="user_id"))
@@ -44,7 +44,7 @@ public class User
 
 
 
-    public User( String username, String email, String password, String firstName, String lastName, String academicGroup, int voteCount) {
+    public User( String username, String email, String password, String firstName, String lastName) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -55,6 +55,10 @@ public class User
     public User()
     {
 
+    }
+
+    public User(Integer roleInProject) {
+        this.roleInProject = roleInProject;
     }
 
     public Long getId() {
@@ -105,20 +109,20 @@ public class User
         this.lastName = lastName;
     }
 
-    public ProjectRole getRoleInProject() {
-        return roleInProject;
-    }
-
-    public void setRoleInProject(ProjectRole roleInProject) {
-        this.roleInProject = roleInProject;
-    }
-
     public Set<Role> getRole() {
         return role;
     }
 
     public void setRole(Set<Role> role) {
         this.role = role;
+    }
+
+    public Integer getRoleInProject() {
+        return roleInProject;
+    }
+
+    public void setRoleInProject(Integer roleInProject) {
+        this.roleInProject = roleInProject;
     }
 
     public void setActive(boolean b) {

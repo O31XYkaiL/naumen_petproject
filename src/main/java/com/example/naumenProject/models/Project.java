@@ -62,6 +62,7 @@ public class Project
         this.projectRating = 0;
     }
 
+
     public Long getId() {
         return id;
     }

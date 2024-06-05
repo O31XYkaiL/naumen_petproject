@@ -40,13 +40,15 @@ public class WebController {
     public final ProjectRepository projectRepository;
     private final ProjectService projectService;
     private final TeamService teamService;
+    private final UserService userService;
 
     @Autowired
-    public WebController(UserRepository userRepository, ProjectRepository projectRepository, ProjectService projectService, TeamService teamService) {
+    public WebController(UserRepository userRepository, ProjectRepository projectRepository, ProjectService projectService, TeamService teamService, UserService userService) {
         this.userRepository = userRepository;
         this.projectRepository = projectRepository;
         this.projectService = projectService;
         this.teamService = teamService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/")
@@ -105,7 +107,7 @@ public class WebController {
         return "redirect:/projects";
     }
 
-//    @PostMapping(value = "/createProject")
+//    @PostMapping(value = "/updateProject")
 //    public String updateProject(@RequestParam("name") String name, @RequestParam("description") String description,
 //                                Authentication authentication) {
 //        String username = authentication.getName();
@@ -120,16 +122,10 @@ public class WebController {
 //        return "redirect:/projects";
 //    }
 
+    // Не работает, ПОПРАВИТЬ удаление только TeamLead
     @PostMapping(value = "/deleteProject")
     public String deleteProject(@RequestParam("id") Long id, Authentication authentication) {
-        String username = authentication.getName();
-        User myUser = userRepository.findUserByUsername(username);
-        String role = String.valueOf(myUser.getRoleInProject());
-
-        if (Objects.equals(role, "TeamLead")){
-            projectService.deleteProject(id);
-        }
-     //   projectService.deleteProject(id);
+        projectService.deleteProject(id);
 
         return "redirect:/projects";
     }
@@ -261,75 +257,5 @@ public class WebController {
         return "redirect:/games/" + id + "/unzipped/index.html";
     }
 
-    @GetMapping(value = "/teams")
-    public String getTeamPage(Model model, Authentication authentication) {
-        String username = authentication.getName();
 
-        User currentUser = userRepository.findUserByUsername(username);
-
-        var teams = teamService.getAllTeams();
-
-        model.addAttribute("title", "Команды");
-        model.addAttribute("user", currentUser);
-        model.addAttribute("teams", teams);
-
-        return "teams";
-    }
-
-    @PostMapping(value = "/createTeam")
-    public String createTeam(@RequestParam("team_name") String teamName,
-                                Authentication authentication) {
-        String username = authentication.getName();
-
-        User currentUser = userRepository.findUserByUsername(username);
-
-        Team team = new Team(UUID.randomUUID().getMostSignificantBits(), teamName, username, "");
-
-        teamService.createTeam(team);
-
-        return "redirect:/teams";
-    }
-
-    @PostMapping(value = "/joinToTeam")
-    public String joinToTeam(@RequestParam("team_name") String teamName, @RequestParam("members") String members) {
-        var team = teamService.getTeamByName(teamName);
-
-        if (team != null) {
-            team.setMembers(members);
-            teamService.updateTeam(team);
-        }
-
-        return "redirect:/teams";
-    }
-
-//    @PostMapping(value = "/chooseTeamRole")
-//    public String chooseTeamRole(@RequestParam("name") String name, @RequestParam("description") String description,
-//                                 Authentication authentication) {
-//        String username = authentication.getName();
-//
-//        User currentUser = userRepository.findUserByUsername(username);
-//
-//        Project project = new Project(UUID.randomUUID().getMostSignificantBits(), username, name, description, "", "", "", "",
-//                "");
-//
-//        projectService.createProject(project);
-//
-//        return "redirect:/";
-//    }
-
-    @GetMapping(value = "/categories")
-    public String getCategoryPage(Model model, Authentication authentication) {
-        return "categories";
-    }
-
-    @GetMapping(value = "/projectByCategory")
-    public String getProjectByCategory(Model model, Authentication authentication, String category) {
-        var projectsByCategory = projectService.getProjectsByCategory(category);
-
-        model.addAttribute("title", "Проекты категории " + category);
-        model.addAttribute("category", category);
-        model.addAttribute("projects", projectsByCategory);
-        System.out.println(projectsByCategory);
-        return "categories";
-    }
 }

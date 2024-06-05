@@ -12,10 +12,12 @@
     <p>Почта: [[${user.getEmail()}]]</p>
     <p>Команда: [[${user.getEmail()}]]</p>
 <!--    <p>Проект(ы): [[${user.getEmail()}]]</p>-->
-    <p>Роль в проекте: [[${user.getRoleInProject()}]]</p>
+<!--    <p>Роль в проекте: [[${user.getRoleInProject()}]]</p>-->
     <h1>Изменить роль</h1>
     <form th:action="@{/chooseTeamRole}" method="post">
-        <label for="roleInProject">Роль: <input type="text" id="roleInProject" name="roleInProject"></label><br>
+<!--        <input for="TeamLead">TeamLead <input type="checkbox" id="TeamLead" value="1"></input><br>-->
+<!--        <input for="Frontend">Frontend <input type="checkbox" id="Frontend" value="1"></input><br>-->
+        <label for="name">Название: <input type="text" id="name" name="name"></label><br>
         <input type="submit" value="Изменить">
     </form>
     <p>User/Admin: [[${user.getRole()}]]</p>
