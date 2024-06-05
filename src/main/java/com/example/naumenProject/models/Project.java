@@ -17,9 +17,6 @@ public class Project
     @GeneratedValue
     private Long id;
 
-    @Column(name = "project_id")
-    private Long projectId;
-
     @Column(name = "project_name")
     private String projectName;
 
@@ -52,8 +49,8 @@ public class Project
     {
     }
 
-    public Project(Long projectId, String projectCreator, String projectName, String projectDescription, String gameplayVideo, String coverImage, String projectCategory, String repositoryLink, String projectArchivePath) {
-        this.projectId = projectId;
+    public Project(Long id, String projectCreator, String projectName, String projectDescription, String gameplayVideo, String coverImage, String projectCategory, String repositoryLink, String projectArchivePath) {
+        this.id = id;
         this.projectCreator = projectCreator;
         this.projectName = projectName;
         this.projectDescription = projectDescription;
@@ -71,14 +68,6 @@ public class Project
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public String getProjectCreator() {

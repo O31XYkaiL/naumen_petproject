@@ -5,8 +5,12 @@
 </head>
 <body>
     <h1>Информация</h1>
+    <p>ID: [[${user.getId()}]]</p>
     <p>Логин: [[${user.username}]]</p>
     <p>Имя: [[${user.firstName}]]</p>
     <p>Фамилия: [[${user.lastName}]]</p>
+    <p>Почта: [[${user.getEmail()}]]</p>
+    <p>Роль в проекте: [[${user.getRoleInProject()}]]</p>
+    <p>User/Admin: [[${user.getRole()}]]</p>
 </body>
 </html>

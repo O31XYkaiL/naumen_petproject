@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Команды</title>
+</head>
+<body>
+<h1>[[${title}]]</h1>
+<p>Логин: [[${user.username}]]</p>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Команда</th>
+        <th>Участники</th>
+        <th>Проекты</th>
+        <th>Рейтинг</th>
+    </tr>
+
+    <tr th:each="team : ${teams}">
+        <td th:text="${team.getId()}"></td>
+        <td th:text="${team.getTeamName()}"></td>
+        <td th:text="${team.getMembers()}"></td>
+        <td th:text="${team.getProjectName()}"></td>
+    </tr>
+</table>
+
+<h1>Создать новую команду</h1>
+<form th:action="@{/createTeam}" method="post">
+    <label for="team_name">Название: <input type="text" id="team_name" name="team_name"></label><br>
+    <input type="submit" value="Создать">
+</form>
+
+<h1>Присоединиться к команде</h1>
+<form th:action="@{/joinToTeam}" method="post">
+    <label for="team_name1">Проект: <input type="text" id="team_name1" name="team_name"></label><br>
+    <input type="submit" value="Присоединиться">
+</form>
+</body>
+</html>

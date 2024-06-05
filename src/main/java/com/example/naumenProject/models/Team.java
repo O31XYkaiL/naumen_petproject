@@ -6,17 +6,13 @@ import lombok.experimental.Accessors;
 import java.util.Date;
 import java.util.Objects;
 
-//@Accessors(chain = true)
-@Table(name = "block1_team")
 @Entity
+@Table(name = "block1_team")
 public class Team
 {
     @Id
     @GeneratedValue
     private Long id;
-
-    @Column(name = "team_id")
-    private String teamId;
 
     @Column(name = "team_name")
     private String teamName;
@@ -24,20 +20,18 @@ public class Team
     @Column(name = "members")
     private String members;
 
-
-    @Column(name = "project_name")
+    @Column(name = "projects")
     private String projectName;
-    @Column(name = "project_id")
-    private String projectId;
 
     public Team()
     {
     }
 
-    public Team(String teamId, String teamName, String members, String projectName, String projectId) {
-        this.teamId = teamId;
+    public Team(Long id, String teamName, String members, String projectName) {
+        this.id = id;
         this.teamName = teamName;
         this.members = members;
+        this.projectName = projectName;
     }
 
     public Long getId() {
@@ -46,14 +40,6 @@ public class Team
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(String teamId) {
-        this.teamId = teamId;
     }
 
     public String getTeamName() {
@@ -70,6 +56,14 @@ public class Team
 
     public void setMembers(String members) {
         this.members = members;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public ProjectRole getTeamLead() {
