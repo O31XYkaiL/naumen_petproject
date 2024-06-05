@@ -10,7 +10,14 @@
     <p>Имя: [[${user.firstName}]]</p>
     <p>Фамилия: [[${user.lastName}]]</p>
     <p>Почта: [[${user.getEmail()}]]</p>
+    <p>Команда: [[${user.getEmail()}]]</p>
+<!--    <p>Проект(ы): [[${user.getEmail()}]]</p>-->
     <p>Роль в проекте: [[${user.getRoleInProject()}]]</p>
+    <h1>Изменить роль</h1>
+    <form th:action="@{/chooseTeamRole}" method="post">
+        <label for="roleInProject">Роль: <input type="text" id="roleInProject" name="roleInProject"></label><br>
+        <input type="submit" value="Изменить">
+    </form>
     <p>User/Admin: [[${user.getRole()}]]</p>
 </body>
 </html>

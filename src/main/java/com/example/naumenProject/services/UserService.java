@@ -1,6 +1,5 @@
 package com.example.naumenProject.services;
 
-import com.example.naumenProject.models.ProjectRole;
 import com.example.naumenProject.models.Role;
 import com.example.naumenProject.models.User;
 import com.example.naumenProject.repositories.UserRepository;
@@ -13,13 +12,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @Service
@@ -106,5 +102,8 @@ public class UserService implements UserDetailsService {
 
     }
 
-
+//    public static String getUserRole(String username) {
+//        User myUser = userRepository.findUserByUsername(username);
+//        return String.valueOf(myUser.getRoleInProject());
+//    }
 }

@@ -178,33 +178,6 @@ public class ProjectService {
     }
 
     /**
-     * Редактировать проект, если студент является тимлидом и это его проект.
-     *
-     * @param userId ID студента.
-     * @param projectId ID проекта.
-     * @param updatedProject Обновленные данные проекта.
-     * @return Обновленный объект проекта или null, если редактирование не выполнено.
-     */
-    public Project editProjectByTeamLeader(Long userId, Long projectId, Project updatedProject) {
-        User user = userRepository.findById(userId).orElse(null);
-        Project project = projectRepository.findById(projectId).orElse(null);
-
-        if (user == null || project == null || !user.equals(project.getCreator())) {
-            return null;
-        }
-
-        if (ProjectRole.TEAM_LEAD.getRole().equalsIgnoreCase(user.getRoleInProject().getRole())) {
-            return null;
-        }
-
-        project.setProjectName(updatedProject.getProjectName());
-        project.setProjectDescription(updatedProject.getProjectDescription());
-
-        projectRepository.save(project);
-        return project;
-    }
-
-    /**
      * Загружает архив проекта, разархивирует его и сохраняет ссылку в базе данных.
      *
      * @param projectId   Идентификатор проекта, для которого загружается архив.
@@ -265,4 +238,30 @@ public class ProjectService {
         }
     }
 
+    /**
+     * Редактировать проект, если студент является тимлидом и это его проект.
+     *
+     * @param userId ID студента.
+     * @param projectId ID проекта.
+     * @param updatedProject Обновленные данные проекта.
+     * @return Обновленный объект проекта или null, если редактирование не выполнено.
+     */
+    public Project editProjectByTeamLeader(Long userId, Long projectId, Project updatedProject) {
+        User user = userRepository.findById(userId).orElse(null);
+        Project project = projectRepository.findById(projectId).orElse(null);
+
+        if (user == null || project == null || !user.equals(project.getCreator())) {
+            return null;
+        }
+
+        if (ProjectRole.TEAM_LEAD.getProjectRole().equalsIgnoreCase(user.getRoleInProject().getProjectRole())) {
+            return null;
+        }
+
+        project.setProjectName(updatedProject.getProjectName());
+        project.setProjectDescription(updatedProject.getProjectDescription());
+
+        projectRepository.save(project);
+        return project;
+    }
 }

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -13,6 +14,7 @@ import com.example.naumenProject.models.Team;
 import com.example.naumenProject.repositories.ProjectRepository;
 import com.example.naumenProject.repositories.TeamRepository;
 import com.example.naumenProject.services.TeamService;
+import com.example.naumenProject.services.UserService;
 import jakarta.servlet.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -103,9 +105,31 @@ public class WebController {
         return "redirect:/projects";
     }
 
+//    @PostMapping(value = "/createProject")
+//    public String updateProject(@RequestParam("name") String name, @RequestParam("description") String description,
+//                                Authentication authentication) {
+//        String username = authentication.getName();
+//
+//        User currentUser = userRepository.findUserByUsername(username);
+//
+//        Project project = new Project(UUID.randomUUID().getMostSignificantBits(), username, name, description, "", "", "", "",
+//                "");
+//
+//        projectService.createProject(project);
+//
+//        return "redirect:/projects";
+//    }
+
     @PostMapping(value = "/deleteProject")
     public String deleteProject(@RequestParam("id") Long id, Authentication authentication) {
-        projectService.deleteProject(id);
+        String username = authentication.getName();
+        User myUser = userRepository.findUserByUsername(username);
+        String role = String.valueOf(myUser.getRoleInProject());
+
+        if (Objects.equals(role, "TeamLead")){
+            projectService.deleteProject(id);
+        }
+     //   projectService.deleteProject(id);
 
         return "redirect:/projects";
     }
@@ -278,34 +302,28 @@ public class WebController {
         return "redirect:/teams";
     }
 
-    @PostMapping(value = "/chooseTeamRole")
-    public String chooseTeamRole(@RequestParam("name") String name, @RequestParam("description") String description,
-                                 Authentication authentication) {
-        String username = authentication.getName();
-
-        User currentUser = userRepository.findUserByUsername(username);
-
-        Project project = new Project(UUID.randomUUID().getMostSignificantBits(), username, name, description, "", "", "", "",
-                "");
-
-        projectService.createProject(project);
-
-        return "redirect:/";
-    }
+//    @PostMapping(value = "/chooseTeamRole")
+//    public String chooseTeamRole(@RequestParam("name") String name, @RequestParam("description") String description,
+//                                 Authentication authentication) {
+//        String username = authentication.getName();
+//
+//        User currentUser = userRepository.findUserByUsername(username);
+//
+//        Project project = new Project(UUID.randomUUID().getMostSignificantBits(), username, name, description, "", "", "", "",
+//                "");
+//
+//        projectService.createProject(project);
+//
+//        return "redirect:/";
+//    }
 
     @GetMapping(value = "/categories")
     public String getCategoryPage(Model model, Authentication authentication) {
-
-
         return "categories";
     }
 
     @GetMapping(value = "/projectByCategory")
     public String getProjectByCategory(Model model, Authentication authentication, String category) {
-       // String username = authentication.getNameCategory();
-
-        //Project category = projectRepository.findProjectsByProjectCategory(nameOfCategory);
-
         var projectsByCategory = projectService.getProjectsByCategory(category);
 
         model.addAttribute("title", "Проекты категории " + category);
