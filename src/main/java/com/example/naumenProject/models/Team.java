@@ -3,7 +3,9 @@ package com.example.naumenProject.models;
 import jakarta.persistence.*;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,8 +19,9 @@ public class Team
     @Column(name = "team_name")
     private String teamName;
 
+
     @Column(name = "members")
-    private String members;
+    private ArrayList<String> members;
 
     @Column(name = "projects")
     private String projectName;
@@ -27,7 +30,7 @@ public class Team
     {
     }
 
-    public Team(Long id, String teamName, String members, String projectName) {
+    public Team(Long id, String teamName, ArrayList<String> members, String projectName) {
         this.id = id;
         this.teamName = teamName;
         this.members = members;
@@ -50,11 +53,11 @@ public class Team
         this.teamName = teamName;
     }
 
-    public String getMembers() {
+    public List<String> getMembers() {
         return members;
     }
 
-    public void setMembers(String members) {
+    public void setMembers(ArrayList<String> members) {
         this.members = members;
     }
 

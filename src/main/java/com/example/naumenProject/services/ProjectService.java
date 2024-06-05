@@ -246,22 +246,22 @@ public class ProjectService {
      * @param updatedProject Обновленные данные проекта.
      * @return Обновленный объект проекта или null, если редактирование не выполнено.
      */
-    public Project editProjectByTeamLeader(Long userId, Long projectId, Project updatedProject) {
-        User user = userRepository.findById(userId).orElse(null);
-        Project project = projectRepository.findById(projectId).orElse(null);
-
-        if (user == null || project == null || !user.equals(project.getCreator())) {
-            return null;
-        }
-
-        if (ProjectRole.TEAM_LEAD.getProjectRole().equalsIgnoreCase(user.getRoleInProject().getProjectRole())) {
-            return null;
-        }
-
-        project.setProjectName(updatedProject.getProjectName());
-        project.setProjectDescription(updatedProject.getProjectDescription());
-
-        projectRepository.save(project);
-        return project;
-    }
+//    public Project editProjectByTeamLeader(Long userId, Long projectId, Project updatedProject) {
+//        User user = userRepository.findById(userId).orElse(null);
+//        Project project = projectRepository.findById(projectId).orElse(null);
+//
+//        if (user == null || project == null || !user.equals(project.getCreator())) {
+//            return null;
+//        }
+//
+//        if (ProjectRole.TEAM_LEAD.getProjectRole().equalsIgnoreCase(user.getRoleInProject().getProjectRole())) {
+//            return null;
+//        }
+//
+//        project.setProjectName(updatedProject.getProjectName());
+//        project.setProjectDescription(updatedProject.getProjectDescription());
+//
+//        projectRepository.save(project);
+//        return project;
+//    }
 }
