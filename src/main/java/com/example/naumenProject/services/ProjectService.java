@@ -11,6 +11,7 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,12 +55,20 @@ public class ProjectService {
         return projectRepository.getProjectsByUser(username);
     }
 
+//    public List<Project> getProjectsByCategory(String category) {
+//        return projectRepository.findProjectsByProjectCategory(category);
+//    }
+
     public List<Project> getProjectsSortedByRating() {
         return projectRepository.getProjectsSortedByRating();
     }
 
     public Project getProjectByName(String name) {
         return projectRepository.getProjectByName(name);
+    }
+
+    public List<Project> getProjectsByCategory(String category) {
+        return projectRepository.getProjectsByProjectCategory(category);
     }
 
     public List<Project> getAllProjects() {
@@ -194,19 +203,6 @@ public class ProjectService {
         projectRepository.save(project);
         return project;
     }
-
-    /**
-     * Метод, который позволит нам получить категорию и подкатегорию проекта
-     *
-     * @param category Категория проекта.
-     * @param subcategory Подкатегория проекта.
-     * @return Список проектов, соответствующих заданным категории и подкатегории.
-     */
-    // public List<Project> filterProjectsByCategoryAndSubcategory(String category, String subcategory) {
-    //     log.info("Filtering projects by category and subcategory: {}, {}", category, subcategory);
-
-    //     return projectRepository.findByCategory(category, subcategory);
-    // }
 
     /**
      * Загружает архив проекта, разархивирует его и сохраняет ссылку в базе данных.
