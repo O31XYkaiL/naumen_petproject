@@ -13,9 +13,9 @@ public enum ProjectRole {
     ANALYST("Analyst"),
     SCIENTIST("Scientist");
 
-    private final String role;
+    private final String projectRole;
 
-    ProjectRole(String role) {
-        this.role = role;
+    ProjectRole(String projectRole) {
+        this.projectRole = projectRole;
     }
 }
