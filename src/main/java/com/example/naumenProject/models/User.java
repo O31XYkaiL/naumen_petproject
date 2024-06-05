@@ -17,7 +17,6 @@ public class User
     @Id
     @GeneratedValue
     private Long id;
-    private Long userId;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -64,14 +63,6 @@ public class User
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getEmail() {

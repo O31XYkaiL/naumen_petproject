@@ -1,5 +1,6 @@
 package com.example.naumenProject.services;
 
+import com.example.naumenProject.models.Project;
 import com.example.naumenProject.repositories.UserRepository;
 import com.example.naumenProject.repositories.TeamRepository;
 import com.example.naumenProject.models.ProjectRole;
@@ -8,6 +9,8 @@ import com.example.naumenProject.models.Team;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Сервис, обеспечивающий работу с командами и их членами.
@@ -35,6 +38,10 @@ public class TeamService {
         return teamRepository.findById(id).orElse(null);
     }
 
+    public Team getTeamByName(String name) {
+        return teamRepository.getTeamByName(name);
+    }
+
     /**
      * Создать новую команду.
      *
@@ -43,6 +50,12 @@ public class TeamService {
     public void createTeam(Team team) {
         log.info("Creating a new team: {}", team);
         teamRepository.save(team);
+    }
+
+    public List<Team> getAllTeams() {
+        log.info("Getting all teams");
+        var iterable = teamRepository.findAll();
+        return (List<Team>) iterable;
     }
 
     /**
