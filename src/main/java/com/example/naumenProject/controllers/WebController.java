@@ -62,6 +62,21 @@ public class WebController {
         return "index";
     }
 
+    @GetMapping(value = "/all_projects")
+    public String getAllProjectsPage(Model model, Authentication authentication) {
+        String username = authentication.getName();
+
+        User currentUser = userRepository.findUserByUsername(username);
+
+        var projects = projectService.getAllProjects();
+
+        model.addAttribute("title", "Проекты");
+        model.addAttribute("user", currentUser);
+        model.addAttribute("projects", projects);
+
+        return "projects";
+    }
+
     @GetMapping(value = "/projects")
     public String getProjectsPage(Model model, Authentication authentication) {
         String username = authentication.getName();
@@ -70,7 +85,7 @@ public class WebController {
 
         var projects = projectService.getAllProjects();
 
-        model.addAttribute("title", "Проекты");
+        model.addAttribute("title", "Мои проекты");
         model.addAttribute("user", currentUser);
         model.addAttribute("projects", projects);
 
@@ -107,25 +122,14 @@ public class WebController {
         return "redirect:/projects";
     }
 
-//    @PostMapping(value = "/updateProject")
-//    public String updateProject(@RequestParam("name") String name, @RequestParam("description") String description,
-//                                Authentication authentication) {
-//        String username = authentication.getName();
-//
-//        User currentUser = userRepository.findUserByUsername(username);
-//
-//        Project project = new Project(UUID.randomUUID().getMostSignificantBits(), username, name, description, "", "", "", "",
-//                "");
-//
-//        projectService.createProject(project);
-//
-//        return "redirect:/projects";
-//    }
-
-    // Не работает, ПОПРАВИТЬ удаление только TeamLead
     @PostMapping(value = "/deleteProject")
     public String deleteProject(@RequestParam("id") Long id, Authentication authentication) {
-        projectService.deleteProject(id);
+        String username = authentication.getName();
+        Project project = projectService.getProjectById(id);
+        String creatorName = project.getProjectCreator();
+        if (Objects.equals(username, creatorName)){
+            projectService.deleteProject(id);
+        }
 
         return "redirect:/projects";
     }
@@ -373,15 +377,6 @@ public class WebController {
     @PostMapping(value = "/chooseTeamRole")
     public String chooseTeamRole(@RequestParam("team_role") String roleInProject,
                                  Authentication authentication) {
-//        String username = authentication.getName();
-//
-//        User currentUser = userRepository.findUserByUsername(username);
-
-//        User myUser = new User(roleInProject);
-//
-//        userService.createUser(myUser);
-//
-//        return "redirect:/";
 
         String username = authentication.getName();
         var user = userService.getUserByUsername(username);

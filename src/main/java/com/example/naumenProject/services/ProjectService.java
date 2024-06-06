@@ -99,6 +99,7 @@ public class ProjectService {
         log.info("Creating a new project: {}", project);
         projectRepository.save(project);
     }
+
     /**
      * Обновить информацию о проекте.
      *
