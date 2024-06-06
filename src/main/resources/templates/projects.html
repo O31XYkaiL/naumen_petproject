@@ -23,6 +23,7 @@
         <tr>
             <th>ID</th>
             <th>Проект</th>
+            <th>Обложка</th>
             <th>Создатель</th>
             <th>Описание</th>
             <th>Рейтинг</th>
@@ -33,6 +34,8 @@
         <tr th:each="project : ${projects}">
             <td th:text="${project.getId()}"></td>
             <td th:text="${project.getProjectName()}"></td>
+<!--            <td th:text="${project.getCoverImage()}"></td>-->
+            <td><img th:src="@{'/cover?id=' + ${project.getId()}}" width="100" height="100"></td>
             <td th:text="${project.getProjectCreator()}"></td>
             <td th:text="${project.getProjectDescription()}"></td>
             <td th:text="${project.getProjectRating()}"></td>
@@ -51,49 +54,49 @@
 
     <h1>Изменить рейтинг</h1>
     <form th:action="@{/updateRating}" method="post">
-        <label for="projectName">Проект: <input type="text" id="projectName" name="projectName"></label><br>
+        <label for="id">ID: <input type="text" id="id" name="id"></label><br>
         <label for="rating">Рейтинг: <input type="text" id="rating" name="rating"></label><br>
         <input type="submit" value="Изменить">
     </form>
 
     <h1>Удалить проект</h1>
     <form th:action="@{/deleteProject}" method="post">
-        <label for="id">ID: <input type="text" id="id" name="id"></label><br>
+        <label for="id1">ID: <input type="text" id="id1" name="id"></label><br>
         <input type="submit" value="Удалить">
     </form>
 
     <h1>Загрузить видео геймплея</h1>
     <form th:action="@{/uploadGameplayVideo}" method="post" enctype="multipart/form-data">
-        <label for="id">ID: <input type="text" id="id" name="id"></label><br>
-        <input type="file" name="file" id="file">
+        <label for="id2">ID: <input type="text" id="id2" name="id"></label><br>
+        <input type="file" name="file" id="file1">
         <input type="submit" value="Загрузить">
     </form>
 
     <h1>Загрузить обложку</h1>
     <form th:action="@{/uploadCover}" method="post" enctype="multipart/form-data">
-        <label for="id">ID: <input type="text" id="id" name="id"></label><br>
-        <input type="file" name="file" id="file">
+        <label for="id3">ID: <input type="text" id="id3" name="id"></label><br>
+        <input type="file" name="file" id="file2">
         <input type="submit" value="Загрузить">
     </form>
 
     <h1>Изменить категорию проекта</h1>
-    <form th:action="@{/changeProjectCategory}" method="post" enctype="multipart/form-data">
-        <label for="id">ID: <input type="text" id="id" name="id"></label><br>
-        <input type="file" name="file" id="file">
-        <input type="submit" value="Загрузить">
+    <form th:action="@{/changeProjectCategory}" method="post">
+        <label for="id4">ID: <input type="text" id="id4" name="id"></label><br>
+        <label for="category">Категория: <input type="text" id="category" name="category"></label><br>
+        <input type="submit" value="Изменить">
     </form>
 
     <h1>Загрузить ссылку на репозиторий</h1>
-    <form th:action="@{/uploadRepositoryLink}" method="post" enctype="multipart/form-data">
-        <label for="id">ID: <input type="text" id="id" name="id"></label><br>
-        <input type="file" name="file" id="file">
-        <input type="submit" value="Загрузить">
+    <form th:action="@{/setRepositoryLink}" method="post">
+        <label for="id5">ID: <input type="text" id="id5" name="id"></label><br>
+        <label for="repo">Репо: <input type="text" id="repo" name="repo"></label><br>
+        <input type="submit" value="Изменить">
     </form>
 
     <h1>Загрузить архив проекта</h1>
     <form th:action="@{/uploadArchive}" method="post" enctype="multipart/form-data">
-        <label for="id">ID: <input type="text" id="id" name="id"></label><br>
-        <input type="file" name="file" id="file">
+        <label for="id6">ID: <input type="text" id="id6" name="id"></label><br>
+        <input type="file" name="file" id="file5">
         <input type="submit" value="Загрузить">
     </form>
 </body>

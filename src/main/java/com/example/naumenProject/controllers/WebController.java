@@ -18,7 +18,9 @@ import com.example.naumenProject.services.UserService;
 import jakarta.servlet.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -132,7 +134,7 @@ public class WebController {
 
 
     @PostMapping(value = "/uploadArchive")
-    public ResponseEntity<String> uploadArchive(@RequestParam("id") Long id, @RequestParam("project_archive") MultipartFile archiveFile,
+    public ResponseEntity<String> uploadArchive(@RequestParam("id") Long id, @RequestParam("file") MultipartFile archiveFile,
             Authentication authentication) {
         var project = projectService.getProjectById(id);
 
@@ -182,9 +184,9 @@ public class WebController {
     }
 
     @PostMapping(value = "/updateRating")
-    public String updateRating(@RequestParam("projectName") String projectName, @RequestParam("rating") Integer rating,
+    public String updateRating(@RequestParam("id") Long id, @RequestParam("rating") Integer rating,
             Authentication authentication) {
-        var project = projectService.getProjectByName(projectName);
+        var project = projectService.getProjectById(id);
 
         if (project != null) {
             project.setProjectRating(rating);
@@ -258,14 +260,14 @@ public class WebController {
     }
 
     @PostMapping(value = "/uploadGameplayVideo")
-    public ResponseEntity<String> uploadGameplayVideo(@RequestParam("id") Long id, @RequestParam("video_gameplay") MultipartFile videoFile,
+    public ResponseEntity<String> uploadGameplayVideo(@RequestParam("id") Long id, @RequestParam("file") MultipartFile videoFile,
                                                 Authentication authentication) {
         var project = projectService.getProjectById(id);
 
         if (project != null && !videoFile.isEmpty()) {
             String contentType = videoFile.getContentType();
             assert contentType != null;
-            if (!contentType.equalsIgnoreCase("mp4")) {
+            if (!contentType.equals("video/mp4")) {
                 return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body("Only mp4 files are allowed.");
             }
 
@@ -296,14 +298,14 @@ public class WebController {
     }
 
     @PostMapping(value = "/uploadCover")
-    public ResponseEntity<String> uploadCover(@RequestParam("id") Long id, @RequestParam("video_gameplay") MultipartFile coverFile,
+    public ResponseEntity<String> uploadCover(@RequestParam("id") Long id, @RequestParam("file") MultipartFile coverFile,
                                                       Authentication authentication) {
         var project = projectService.getProjectById(id);
 
         if (project != null && !coverFile.isEmpty()) {
             String contentType = coverFile.getContentType();
             assert contentType != null;
-            if (!contentType.equalsIgnoreCase("svg")) {
+            if (!contentType.equalsIgnoreCase("image/svg+xml")) {
                 return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body("Only svg files are allowed.");
             }
 
@@ -320,7 +322,7 @@ public class WebController {
                 File file = new File(filePath);
                 coverFile.transferTo(file);
 
-                project.setGameplayVideo(filePath);
+                project.setCoverImage(filePath);
                 projectService.updateProject(project);
 
                 return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully.");
@@ -333,40 +335,36 @@ public class WebController {
         }
     }
 
-    @PostMapping(value = "/uploadRepositoryLink")
-    public ResponseEntity<String> uploadRepositoryLink(@RequestParam("id") Long id, @RequestParam("project_archive") MultipartFile archiveFile,
-                                                Authentication authentication) {
+    @PostMapping(value = "/setRepositoryLink")
+    public String setRepositoryLink(@RequestParam("id") Long id, @RequestParam("repo") String repositoryLink,
+                                    Authentication authentication) {
         var project = projectService.getProjectById(id);
 
-        if (project != null && !archiveFile.isEmpty()) {
-            String contentType = archiveFile.getContentType();
-            if (!"application/zip".equals(contentType) && !"application/x-zip-compressed".equals(contentType)) {
-                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body("Only zip files are allowed.");
-            }
-
-            String uploadDir = project.getUploadDir();
-            String originalFilename = archiveFile.getOriginalFilename();
-            String filePath = uploadDir + originalFilename;
-
-            try {
-                File directory = new File(uploadDir);
-                if (!directory.exists()) {
-                    directory.mkdirs();
-                }
-
-                File file = new File(filePath);
-                archiveFile.transferTo(file);
-
-                project.setProjectArchivePath(filePath);
-                projectService.updateProject(project);
-
-                return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully.");
-            } catch (IOException e) {
-                e.printStackTrace();
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file.");
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid project ID or empty file.");
+        if (project != null) {
+            project.setRepositoryLink(repositoryLink);
+            projectService.updateProject(project);
         }
+
+        return "redirect:/projects";
+    }
+
+    @GetMapping(value = "/cover")
+    public ResponseEntity<byte[]> getCover(@RequestParam("id") Long id) {
+        var project = projectService.getProjectById(id);
+        File cover = new File(project.getCoverImage());
+        byte[] coverBytes = new byte[(int) cover.length()];
+
+        try (FileInputStream fis = new FileInputStream(cover)) {
+            fis.read(coverBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("image/svg+xml"));
+        headers.setContentLength(coverBytes.length);
+
+        return new ResponseEntity<>(coverBytes, headers, HttpStatus.OK);
     }
 }
