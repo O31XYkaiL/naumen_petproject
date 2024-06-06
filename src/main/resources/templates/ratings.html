@@ -5,6 +5,18 @@
     <title>Рейтинги</title>
 </head>
 <body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/categories">Categories</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/ratings">Ratings</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/teams">Teams</a></li>
+        </ul>
+    </nav>
+</header>
     <h1>Рейтинги</h1>
     <p>Логин: [[${user.username}]]</p>
 
@@ -21,7 +33,7 @@
 
     <h1>Изменить рейтинг</h1>
     <form th:action="@{/updateRating}" method="post">
-        <label for="projectName">Проект: <input type="text" id="projectName" name="projectName"></label><br>
+        <label for="id">ID: <input type="text" id="id" name="id"></label><br>
         <label for="rating">Рейтинг: <input type="text" id="rating" name="rating"></label><br>
         <input type="submit" value="Изменить">
     </form>

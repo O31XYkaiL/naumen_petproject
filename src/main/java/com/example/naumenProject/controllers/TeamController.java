@@ -1,5 +1,6 @@
 package com.example.naumenProject.controllers;
 
+import com.example.naumenProject.models.ProjectRole;
 import com.example.naumenProject.models.Team;
 import com.example.naumenProject.models.User;
 import com.example.naumenProject.repositories.ProjectRepository;
@@ -15,9 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 public class TeamController {
@@ -59,7 +58,10 @@ public class TeamController {
 
         User currentUser = userRepository.findUserByUsername(username);
 
-        Team team = new Team(UUID.randomUUID().getMostSignificantBits(), teamName, (ArrayList<String>) Collections.singletonList(username), "");
+        Set<User> members = new HashSet<>();
+        members.add(currentUser);
+
+        Team team = new Team(UUID.randomUUID().getMostSignificantBits(), teamName, members, "");
 
         teamService.createTeam(team);
 
@@ -70,12 +72,45 @@ public class TeamController {
     public String joinToTeam(@RequestParam("team_name") String teamName,
                              Authentication authentication) {
         var team = teamService.getTeamByName(teamName);
+
         String username = authentication.getName();
+        User currentUser = userRepository.findUserByUsername(username);
+
         if (team != null) {
-            team.setMembers((ArrayList<String>) Collections.singletonList(username));
+            team.addMember(currentUser);
             teamService.updateTeam(team);
         }
 
         return "redirect:/teams";
+    }
+
+    @PostMapping(value = "/leaveTeam")
+    public String leaveTeam(@RequestParam("team_name") String teamName,
+                            Authentication authentication) {
+        var team = teamService.getTeamByName(teamName);
+
+        String username = authentication.getName();
+        User currentUser = userRepository.findUserByUsername(username);
+
+        if (team != null) {
+            team.removeMember(currentUser);
+            teamService.updateTeam(team);
+        }
+
+        return "redirect:/teams";
+    }
+
+    @PostMapping(value = "/chooseTeamRole")
+    public String chooseTeamRole(@RequestParam("name") String roleInProject,
+                                 Authentication authentication) {
+        String username = authentication.getName();
+
+        User currentUser = userRepository.findUserByUsername(username);
+
+        currentUser.setRoleInProject(roleInProject);
+
+        userService.updateUser(currentUser);
+
+        return "redirect:/";
     }
 }

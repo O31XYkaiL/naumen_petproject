@@ -1,23 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Информация</title>
 </head>
 <body>
-<h1>Информация</h1>
-<p>ID: [[${user.getId()}]]</p>
-<p>Логин: [[${user.username}]]</p>
-<p>ФИО: [[${user.lastName}]]</p>
-<p>Почта: [[${user.getEmail()}]]</p>
-<p>Команда: [[${user.getEmail()}]]</p>
-<!--    <p>Проект(ы): [[${user.getEmail()}]]</p>-->
-<!--    <p>Роль в проекте: [[${user.getRoleInProject()}]]</p>-->
-<h1>Изменить роль</h1>
-<form th:action="@{/chooseTeamRole}" method="post">
-    <!--        <input for="TeamLead">TeamLead <input type="checkbox" id="TeamLead" value="1"></input><br>-->
-    <!--        <input for="Frontend">Frontend <input type="checkbox" id="Frontend" value="1"></input><br>-->
-    <label for="roleInProject">Роль: <input type="text" id="roleInProject" name="roleInProject"></label><br>
-    <input type="submit" value="Изменить">
-</form>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/categories">Categories</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/ratings">Ratings</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/teams">Teams</a></li>
+        </ul>
+    </nav>
+</header>
+    <h1>Информация</h1>
+    <p>ID: [[${user.getId()}]]</p>
+    <p>Логин: [[${user.username}]]</p>
+    <p>Имя: [[${user.firstName}]]</p>
+    <p>Фамилия: [[${user.lastName}]]</p>
+    <p>Почта: [[${user.email}]]</p>
+    <p>Роль в проекте(ах): [[${user.roleInProject}]]</p>
+
+    <h2>Команды</h2>
+    <ul>
+        <li th:each="team : ${user.getTeams()}">
+            [[${team.teamName}]]
+            <ul>
+                <li th:each="project : ${team.getProjects()}">
+                    Проект: [[${project.projectName}]]
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <h1>Изменить роль</h1>
+    <form th:action="@{/chooseTeamRole}" method="post">
+        <!--        <input for="TeamLead">TeamLead <input type="checkbox" id="TeamLead" value="1"></input><br>-->
+        <!--        <input for="Frontend">Frontend <input type="checkbox" id="Frontend" value="1"></input><br>-->
+        <label for="roleInProject">Роль: <input type="text" id="roleInProject" name="name"></label><br>
+        <input type="submit" value="Изменить">
+    </form>
 </body>
 </html>

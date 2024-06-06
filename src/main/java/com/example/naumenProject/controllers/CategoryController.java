@@ -47,9 +47,9 @@ public class CategoryController {
     }
 
     @PostMapping(value = "/changeProjectCategory")
-    public String changeProjectCategory(@RequestParam("projectName") String projectName, @RequestParam("category_projects") String category,
+    public String changeProjectCategory(@RequestParam("id") String id, @RequestParam("category") String category,
                                Authentication authentication) {
-        var project = projectService.getProjectByName(projectName);
+        var project = projectService.getProjectById(Long.parseLong(id));
 
         if (project != null) {
             project.setProjectCategory(category);

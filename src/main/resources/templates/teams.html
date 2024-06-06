@@ -5,6 +5,18 @@
     <title>Команды</title>
 </head>
 <body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/categories">Categories</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/ratings">Ratings</a></li>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/teams">Teams</a></li>
+        </ul>
+    </nav>
+</header>
 <h1>[[${title}]]</h1>
 <p>Логин: [[${user.username}]]</p>
 <table border="1">
@@ -19,7 +31,7 @@
     <tr th:each="team : ${teams}">
         <td th:text="${team.getId()}"></td>
         <td th:text="${team.getTeamName()}"></td>
-        <td th:text="${team.getMembers()}"></td>
+        <td th:text="${team.getMembersNames()}"></td>
         <td th:text="${team.getProjectName()}"></td>
     </tr>
 </table>
@@ -32,8 +44,14 @@
 
 <h1>Присоединиться к команде</h1>
 <form th:action="@{/joinToTeam}" method="post">
-    <label for="team_name1">Проект: <input type="text" id="team_name1" name="team_name"></label><br>
+    <label for="team_name1">Название: <input type="text" id="team_name1" name="team_name"></label><br>
     <input type="submit" value="Присоединиться">
+</form>
+
+<h1>Покинуть команду</h1>
+<form th:action="@{/leaveTeam}" method="post">
+    <label for="team_name2">Название: <input type="text" id="team_name2" name="team_name"></label><br>
+    <input type="submit" value="Покинуть">
 </form>
 </body>
 </html>

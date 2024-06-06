@@ -2,12 +2,10 @@ package com.example.naumenProject.models;
 
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "block1_project")
@@ -44,6 +42,8 @@ public class Project
     @Column(name = "project_creator")
     private String projectCreator;
 
+    @ManyToMany(mappedBy = "projects")
+    private Set<Team> teams = new HashSet<>();
 
     public Project()
     {
