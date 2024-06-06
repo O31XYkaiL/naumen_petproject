@@ -37,17 +37,20 @@
         <tr th:each="project : ${projects}">
             <td th:text="${project.getId()}"></td>
             <td th:text="${project.getProjectName()}"></td>
-<!--            <td th:text="${project.getCoverImage()}"></td>-->
             <td><img th:src="@{'/cover?id=' + ${project.getId()}}" width="100" height="100"></td>
             <td th:text="${project.getProjectCreator()}"></td>
             <td th:text="${project.getProjectDescription()}"></td>
             <td th:text="${project.getProjectRating()}"></td>
-            <td><a th:href="@{'/play?id=' + ${project.getId()}}">Играть</a></td>
+            <td th:if="${project.getProjectArchivePath() != ''}">
+                <a th:href="@{'/play?id=' + ${project.getId()}}">Играть</a>
+            </td>
+            <td th:if="${project.getProjectArchivePath() == ''}"></td>
             <td th:text="${project.getProjectCategory()}"></td>
             <td th:text="${project.getProjectArchivePath() != ''} ? 'Есть' : 'Нет'"></td>
             <td th:if="${project.getRepositoryLink() != null and !#strings.isEmpty(project.getRepositoryLink())}">
                 <a th:href="${project.getRepositoryLink()}">Ссылка</a>
             </td>
+            <td th:if="${project.getRepositoryLink() == null or #strings.isEmpty(project.getRepositoryLink())}"></td>
         </tr>
     </table>
 
