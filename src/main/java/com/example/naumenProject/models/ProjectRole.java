@@ -15,6 +15,10 @@ public enum ProjectRole {
 
     private final String projectRole;
 
+    public String getProjectRole() {
+        return projectRole;
+    }
+
     ProjectRole(String projectRole) {
         this.projectRole = projectRole;
     }

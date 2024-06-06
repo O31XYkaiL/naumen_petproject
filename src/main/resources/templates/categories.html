@@ -20,17 +20,14 @@
 
 <h1>Выберите категорию</h1>
 <form th:action="@{/projectByCategory}" method="get">
-<!--    <a class="btn" href="/categories?input=fantasy">fantasy</a>-->
-<!--    <a class="btn" href="/categories?input=horror">two</a>-->
-<!--    <a class="btn" href="/categories?input=action">action</a>-->
-<!--    <a class="btn" href="/categories?input=arcade">arcade</a>-->
-
-    <label for="category">Категория: <input type="text" id="category" name="category"></label><br>
-    <input type="submit" value="Показать">
+    <button type="submit" th:name="category" th:value="Horror">horror</button>
+    <button type="submit" th:name="category" th:value="Fantasy">fantasy</button>
+    <button type="submit" th:name="category" th:value="Arcade">horror</button>
+    <button type="submit" th:name="category" th:value="Education">fantasy</button>
 
     <table border="1">
         <tr>
-            <th>Проект</th>
+            <th>Проект(ы):</th>
 
         </tr>
         <tr th:each="project : ${projects}">

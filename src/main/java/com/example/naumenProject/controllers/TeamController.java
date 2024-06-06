@@ -83,7 +83,6 @@ public class TeamController {
 
         return "redirect:/teams";
     }
-
     @PostMapping(value = "/chooseTeamRole")
     public String chooseTeamRole(@RequestParam("name") String roleInProject,
                                  Authentication authentication) {
