@@ -47,5 +47,11 @@
     <label for="team_name1">Название: <input type="text" id="team_name1" name="team_name"></label><br>
     <input type="submit" value="Присоединиться">
 </form>
+
+<h1>Покинуть команду</h1>
+<form th:action="@{/leaveTeam}" method="post">
+    <label for="team_name2">Название: <input type="text" id="team_name2" name="team_name"></label><br>
+    <input type="submit" value="Покинуть">
+</form>
 </body>
 </html>

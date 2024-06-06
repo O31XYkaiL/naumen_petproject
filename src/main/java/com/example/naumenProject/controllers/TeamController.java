@@ -83,6 +83,23 @@ public class TeamController {
 
         return "redirect:/teams";
     }
+
+    @PostMapping(value = "/leaveTeam")
+    public String leaveTeam(@RequestParam("team_name") String teamName,
+                            Authentication authentication) {
+        var team = teamService.getTeamByName(teamName);
+
+        String username = authentication.getName();
+        User currentUser = userRepository.findUserByUsername(username);
+
+        if (team != null) {
+            team.removeMember(currentUser);
+            teamService.updateTeam(team);
+        }
+
+        return "redirect:/teams";
+    }
+
     @PostMapping(value = "/chooseTeamRole")
     public String chooseTeamRole(@RequestParam("name") String roleInProject,
                                  Authentication authentication) {
