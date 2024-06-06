@@ -91,36 +91,4 @@ public class TeamService {
         }
         return null;
     }
-
-    /**
-     * Добавить студента в команду и назначить ему роль (не тимлида).
-     *
-     * @param teamId ID команды.
-     * @param lastName Фамилия студента.
-     * @param firstName Имя студента.
-     * @param role Роль, которую нужно назначить студенту (не тимлида).
-     * @return Обновленный объект команды или null, если операция не выполнена.
-     */
-//    public Team addUserToTeamWithRole(Long teamId, String username, String role) {
-//        Team team = teamRepository.findById(teamId).orElse(null);
-//
-//        if (team == null || !ProjectRole.TEAM_LEAD.equals(team.getTeamLead())) {
-//            return null;
-//        }
-//
-//        User userToAdd = userRepository.findUserByUsername(username);
-//
-//        if (userToAdd == null || ProjectRole.TEAM_LEAD.equals(userToAdd.getRoleInProject())) {
-//            return null;
-//        }
-//
-//        // TODO: привести members к типу List<User>
-//        // team.getMembers().add(userToAdd);
-//        userToAdd.setRoleInProject(ProjectRole.valueOf(role));
-//
-//        teamRepository.save(team);
-//        userRepository.save(userToAdd);
-//
-//        return team;
-//    }
 }

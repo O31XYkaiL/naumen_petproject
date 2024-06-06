@@ -1,5 +1,6 @@
 package com.example.naumenProject.services;
 
+import com.example.naumenProject.models.Project;
 import com.example.naumenProject.models.Role;
 import com.example.naumenProject.models.User;
 import com.example.naumenProject.repositories.UserRepository;
@@ -22,14 +23,14 @@ import java.util.Set;
 @Slf4j
 public class UserService implements UserDetailsService {
     /**
-     * Репозиторий студента
+     * Репозиторий пользователя.
      */
     private final UserRepository userRepository;
 
     /**
      * Конструктор сервиса.
      *
-     * @param userRepository Репозиторий студентов.
+     * @param userRepository Репозиторий пользователей.
      */
     @Autowired
     public UserService(UserRepository userRepository)
@@ -37,21 +38,19 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    /**
-     * Получить информацию о студенте по его ID.
-     *
-     * @param id ID студента.
-     * @return Объект студента или null, если студент не найден.
-     */
     public User getUserById(Long id) {
         log.info("Getting user by ID: {}", id);
         return userRepository.findById(id).orElse(null);
     }
 
+    public User getUserByUsername(String name) {
+        return userRepository.getUserByUsername(name);
+    }
+
     /**
-     * Создать нового студента.
+     * Создать нового пользователя.
      *
-     * @param user Объект студента, который будет создан.
+     * @param user Объект пользователя, который будет создан.
      */
     public void createUser(User user) {
         log.info("Creating a new user: {}", user);
@@ -101,9 +100,4 @@ public class UserService implements UserDetailsService {
         return "redirect:/login";
 
     }
-
-//    public static String getUserRole(String username) {
-//        User myUser = userRepository.findUserByUsername(username);
-//        return String.valueOf(myUser.getRoleInProject());
-//    }
 }

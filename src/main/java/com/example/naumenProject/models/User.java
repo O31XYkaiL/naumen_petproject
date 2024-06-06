@@ -27,29 +27,37 @@ public class User
     @Column(name = "user_email")
     private String email;
 
-    @Column(name = "user_name")
-    private String firstName;
+//    @Column(name = "username")
+//    private String firstName;
 
     @Column(name = "user_surname")
     private String lastName;
 
 
     @Column(name = "team_role")
-    private Integer roleInProject;
+    private String roleInProject;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role_team", joinColumns = @JoinColumn(name="user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> role = new HashSet<>();
 
-
-
     public User( String username, String email, String password, String firstName, String lastName) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.firstName = firstName;
+      //  this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public User(Long id, String username, String password, String email, String firstName, String lastName, String roleInProject, Set<Role> role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+      //  this.firstName = firstName;
+        this.lastName = lastName;
+        this.roleInProject = roleInProject;
     }
 
     public User()
@@ -57,7 +65,7 @@ public class User
 
     }
 
-    public User(Integer roleInProject) {
+    public User(String roleInProject) {
         this.roleInProject = roleInProject;
     }
 
@@ -93,13 +101,13 @@ public class User
         return password;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+//    public String getFirstName() {
+//        return firstName;
+//    }
+//
+//    public void setFirstName(String firstName) {
+//        this.firstName = firstName;
+//    }
 
     public String getLastName() {
         return lastName;
@@ -117,13 +125,14 @@ public class User
         this.role = role;
     }
 
-    public Integer getRoleInProject() {
+    public String getRoleInProject() {
         return roleInProject;
     }
 
-    public void setRoleInProject(Integer roleInProject) {
+    public void setRoleInProject(String roleInProject) {
         this.roleInProject = roleInProject;
     }
+
 
     public void setActive(boolean b) {
     }

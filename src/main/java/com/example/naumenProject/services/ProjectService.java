@@ -47,6 +47,11 @@ public class ProjectService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Найти проект.
+     *
+     * @param query Репозиторий по имени, описанию, имени создателя.
+     */
     public List<Project> searchProjects(String query) {
         return projectRepository.searchProjects(query);
     }
@@ -55,10 +60,9 @@ public class ProjectService {
         return projectRepository.getProjectsByUser(username);
     }
 
-//    public List<Project> getProjectsByCategory(String category) {
-//        return projectRepository.findProjectsByProjectCategory(category);
-//    }
-
+    /**
+     * Найти проект.
+     */
     public List<Project> getProjectsSortedByRating() {
         return projectRepository.getProjectsSortedByRating();
     }
@@ -237,31 +241,4 @@ public class ProjectService {
             }
         }
     }
-
-    /**
-     * Редактировать проект, если студент является тимлидом и это его проект.
-     *
-     * @param userId ID студента.
-     * @param projectId ID проекта.
-     * @param updatedProject Обновленные данные проекта.
-     * @return Обновленный объект проекта или null, если редактирование не выполнено.
-     */
-//    public Project editProjectByTeamLeader(Long userId, Long projectId, Project updatedProject) {
-//        User user = userRepository.findById(userId).orElse(null);
-//        Project project = projectRepository.findById(projectId).orElse(null);
-//
-//        if (user == null || project == null || !user.equals(project.getCreator())) {
-//            return null;
-//        }
-//
-//        if (ProjectRole.TEAM_LEAD.getProjectRole().equalsIgnoreCase(user.getRoleInProject().getProjectRole())) {
-//            return null;
-//        }
-//
-//        project.setProjectName(updatedProject.getProjectName());
-//        project.setProjectDescription(updatedProject.getProjectDescription());
-//
-//        projectRepository.save(project);
-//        return project;
-//    }
 }

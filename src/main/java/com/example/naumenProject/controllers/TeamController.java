@@ -78,18 +78,4 @@ public class TeamController {
 
         return "redirect:/teams";
     }
-
-    @PostMapping(value = "/chooseTeamRole")
-    public String chooseTeamRole(@RequestParam("team_role") Integer roleInProject,
-                                 Authentication authentication) {
-//        String username = authentication.getName();
-//
-//        User currentUser = userRepository.findUserByUsername(username);
-
-        User myUser = new User(roleInProject);
-
-        userService.createUser(myUser);
-
-        return "redirect:/";
-    }
 }

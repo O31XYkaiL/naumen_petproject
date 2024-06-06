@@ -369,4 +369,28 @@ public class WebController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid project ID or empty file.");
         }
     }
+
+    @PostMapping(value = "/chooseTeamRole")
+    public String chooseTeamRole(@RequestParam("team_role") String roleInProject,
+                                 Authentication authentication) {
+//        String username = authentication.getName();
+//
+//        User currentUser = userRepository.findUserByUsername(username);
+
+//        User myUser = new User(roleInProject);
+//
+//        userService.createUser(myUser);
+//
+//        return "redirect:/";
+
+        String username = authentication.getName();
+        var user = userService.getUserByUsername(username);
+
+        if (user != null) {
+            user.setRoleInProject(roleInProject);
+            userService.createUser(user);
+        }
+
+        return "redirect:/";
+    }
 }
