@@ -15,6 +15,7 @@
             <th>Описание</th>
             <th>Рейтинг</th>
             <th>Играть</th>
+            <th>Категория</th>
             <th>Архив</th>
         </tr>
         <tr th:each="project : ${projects}">
@@ -24,6 +25,7 @@
             <td th:text="${project.getProjectDescription()}"></td>
             <td th:text="${project.getProjectRating()}"></td>
             <td><a th:href="@{'/play?id=' + ${project.getId()}}">Играть</a></td>
+            <td th:text="${project.getProjectCategory()}"></td>
             <td th:text="${project.getProjectArchivePath()}"></td>
         </tr>
     </table>
