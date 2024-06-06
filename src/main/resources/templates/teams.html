@@ -31,7 +31,7 @@
     <tr th:each="team : ${teams}">
         <td th:text="${team.getId()}"></td>
         <td th:text="${team.getTeamName()}"></td>
-        <td th:text="${team.getMembers()}"></td>
+        <td th:text="${team.getMembersNames()}"></td>
         <td th:text="${team.getProjectName()}"></td>
     </tr>
 </table>

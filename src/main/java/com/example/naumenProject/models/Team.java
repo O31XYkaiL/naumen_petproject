@@ -66,6 +66,14 @@ public class Team
         return members;
     }
 
+    public Set<String> getMembersNames() {
+        Set<String> membersNames = new HashSet<>();
+        for (User user : members) {
+            membersNames.add(user.getUsername());
+        }
+        return membersNames;
+    }
+
     public void setMembers(Set<User> members) {
         this.members = members;
     }
