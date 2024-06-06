@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Информация</title>
 </head>
 <body>
@@ -9,13 +10,26 @@
     <p>Логин: [[${user.username}]]</p>
     <p>Имя: [[${user.firstName}]]</p>
     <p>Фамилия: [[${user.lastName}]]</p>
-    <p>Почта: [[${user.getEmail()}]]</p>
-<!--    <p>Команда: [[${}]]</p>-->
-<!--    <p>Проект(ы): [[${}]]</p>-->
-    <p>Роль в проекте(ах): [[${user.getRoleInProject()}]]</p>
+    <p>Почта: [[${user.email}]]</p>
+    <p>Роль в проекте(ах): [[${user.roleInProject}]]</p>
+
+    <h2>Команды</h2>
+    <ul>
+        <li th:each="team : ${user.getTeams()}">
+            [[${team.teamName}]]
+            <ul>
+                <li th:each="project : ${team.getProjects()}">
+                    Проект: [[${project.projectName}]]
+                </li>
+            </ul>
+        </li>
+    </ul>
+
     <h1>Изменить роль</h1>
     <form th:action="@{/chooseTeamRole}" method="post">
-        <label for="name">Название: <input type="text" id="name" name="name"></label><br>
+        <label for="name">Название:
+            <input type="text" id="name" name="name">
+        </label><br>
         <input type="submit" value="Изменить">
     </form>
 </body>

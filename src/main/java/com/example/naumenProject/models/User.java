@@ -42,6 +42,9 @@ public class User
     @Enumerated(EnumType.STRING)
     private Set<Role> role = new HashSet<>();
 
+    @ManyToMany(mappedBy = "members")
+    private Set<Team> teams = new HashSet<>();
+
 
 
     public User( String username, String email, String password, String firstName, String lastName) {
@@ -117,15 +120,30 @@ public class User
         this.role = role;
     }
 
-    public Integer getRoleInProject() {
-        return roleInProject;
+    public String getRoleInProject() {
+        if (roleInProject == null) {
+            return null;
+        }
+        return ProjectRole.values()[roleInProject].toString();
     }
 
-    public void setRoleInProject(Integer roleInProject) {
-        this.roleInProject = roleInProject;
+    public void setRoleInProject(String roleInProject) {
+        this.roleInProject = ProjectRole.valueOf(roleInProject).ordinal();
     }
 
     public void setActive(boolean b) {
+    }
+
+    public Set<Team> getTeams() {
+        return teams;
+    }
+
+    public void addTeam(Team team) {
+        this.teams.add(team);
+    }
+
+    public void removeTeam(Team team) {
+        this.teams.remove(team);
     }
 
 }
