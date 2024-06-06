@@ -139,9 +139,9 @@ public class Project
         return null;
     }
 
-    public void setCreator(User creator) {
-        // this.creator = creator;
-    }
+//    public void setCreator(User projectCreator) {
+//         this.projectCreator = projectCreator;
+//    }
 
     public Integer getProjectRating() {
         return projectRating;

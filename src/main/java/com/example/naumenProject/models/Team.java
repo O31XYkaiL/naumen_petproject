@@ -19,7 +19,7 @@ public class Team
     @Column(name = "team_name")
     private String teamName;
 
-
+    //@ElementCollection
     @Column(name = "members")
     private ArrayList<String> members;
 
