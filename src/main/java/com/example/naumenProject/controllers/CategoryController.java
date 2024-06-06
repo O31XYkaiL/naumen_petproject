@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CategoryController {
@@ -42,5 +44,18 @@ public class CategoryController {
         model.addAttribute("projects", projectsByCategory);
         System.out.println(projectsByCategory);
         return "categories";
+    }
+
+    @PostMapping(value = "/changeProjectCategory")
+    public String changeProjectCategory(@RequestParam("projectName") String projectName, @RequestParam("category_projects") String category,
+                               Authentication authentication) {
+        var project = projectService.getProjectByName(projectName);
+
+        if (project != null) {
+            project.setProjectCategory(category);
+            projectService.updateProject(project);
+        }
+
+        return "redirect:/categories";
     }
 }

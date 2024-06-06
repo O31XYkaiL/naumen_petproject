@@ -132,7 +132,7 @@ public class WebController {
 
 
     @PostMapping(value = "/uploadArchive")
-    public ResponseEntity<String> uploadArchive(@RequestParam("id") Long id, @RequestParam("file") MultipartFile archiveFile,
+    public ResponseEntity<String> uploadArchive(@RequestParam("id") Long id, @RequestParam("project_archive") MultipartFile archiveFile,
             Authentication authentication) {
         var project = projectService.getProjectById(id);
 
@@ -257,5 +257,116 @@ public class WebController {
         return "redirect:/games/" + id + "/unzipped/index.html";
     }
 
+    @PostMapping(value = "/uploadGameplayVideo")
+    public ResponseEntity<String> uploadGameplayVideo(@RequestParam("id") Long id, @RequestParam("video_gameplay") MultipartFile videoFile,
+                                                Authentication authentication) {
+        var project = projectService.getProjectById(id);
 
+        if (project != null && !videoFile.isEmpty()) {
+            String contentType = videoFile.getContentType();
+            assert contentType != null;
+            if (!contentType.equalsIgnoreCase("mp4")) {
+                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body("Only mp4 files are allowed.");
+            }
+
+            String uploadDir = project.getUploadDir();
+            String originalFilename = videoFile.getOriginalFilename();
+            String filePath = uploadDir + originalFilename;
+
+            try {
+                File directory = new File(uploadDir);
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+
+                File file = new File(filePath);
+                videoFile.transferTo(file);
+
+                project.setGameplayVideo(filePath);
+                projectService.updateProject(project);
+
+                return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid project ID or empty file.");
+        }
+    }
+
+    @PostMapping(value = "/uploadCover")
+    public ResponseEntity<String> uploadCover(@RequestParam("id") Long id, @RequestParam("video_gameplay") MultipartFile coverFile,
+                                                      Authentication authentication) {
+        var project = projectService.getProjectById(id);
+
+        if (project != null && !coverFile.isEmpty()) {
+            String contentType = coverFile.getContentType();
+            assert contentType != null;
+            if (!contentType.equalsIgnoreCase("svg")) {
+                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body("Only svg files are allowed.");
+            }
+
+            String uploadDir = project.getUploadDir();
+            String originalFilename = coverFile.getOriginalFilename();
+            String filePath = uploadDir + originalFilename;
+
+            try {
+                File directory = new File(uploadDir);
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+
+                File file = new File(filePath);
+                coverFile.transferTo(file);
+
+                project.setGameplayVideo(filePath);
+                projectService.updateProject(project);
+
+                return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid project ID or empty file.");
+        }
+    }
+
+    @PostMapping(value = "/uploadRepositoryLink")
+    public ResponseEntity<String> uploadRepositoryLink(@RequestParam("id") Long id, @RequestParam("project_archive") MultipartFile archiveFile,
+                                                Authentication authentication) {
+        var project = projectService.getProjectById(id);
+
+        if (project != null && !archiveFile.isEmpty()) {
+            String contentType = archiveFile.getContentType();
+            if (!"application/zip".equals(contentType) && !"application/x-zip-compressed".equals(contentType)) {
+                return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body("Only zip files are allowed.");
+            }
+
+            String uploadDir = project.getUploadDir();
+            String originalFilename = archiveFile.getOriginalFilename();
+            String filePath = uploadDir + originalFilename;
+
+            try {
+                File directory = new File(uploadDir);
+                if (!directory.exists()) {
+                    directory.mkdirs();
+                }
+
+                File file = new File(filePath);
+                archiveFile.transferTo(file);
+
+                project.setProjectArchivePath(filePath);
+                projectService.updateProject(project);
+
+                return ResponseEntity.status(HttpStatus.OK).body("File uploaded successfully.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file.");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid project ID or empty file.");
+        }
+    }
 }
