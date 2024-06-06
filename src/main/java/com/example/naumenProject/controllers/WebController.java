@@ -10,14 +10,7 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import com.example.naumenProject.models.Team;
-import com.example.naumenProject.repositories.ProjectRepository;
-import com.example.naumenProject.repositories.TeamRepository;
-import com.example.naumenProject.services.TeamService;
-import com.example.naumenProject.services.UserService;
-import jakarta.servlet.Registration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,15 +19,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.naumenProject.models.Project;
 import com.example.naumenProject.models.User;
+import com.example.naumenProject.repositories.ProjectRepository;
 import com.example.naumenProject.repositories.UserRepository;
 import com.example.naumenProject.services.ProjectService;
+import com.example.naumenProject.services.TeamService;
+import com.example.naumenProject.services.UserService;
+
+import jakarta.servlet.Registration;
 
 @Controller
 public class WebController {
@@ -64,21 +61,6 @@ public class WebController {
         return "index";
     }
 
-    @GetMapping(value = "/all_projects")
-    public String getAllProjectsPage(Model model, Authentication authentication) {
-        String username = authentication.getName();
-
-        User currentUser = userRepository.findUserByUsername(username);
-
-        var projects = projectService.getAllProjects();
-
-        model.addAttribute("title", "Проекты");
-        model.addAttribute("user", currentUser);
-        model.addAttribute("projects", projects);
-
-        return "projects";
-    }
-
     @GetMapping(value = "/projects")
     public String getProjectsPage(Model model, Authentication authentication) {
         String username = authentication.getName();
@@ -87,7 +69,7 @@ public class WebController {
 
         var projects = projectService.getAllProjects();
 
-        model.addAttribute("title", "Мои проекты");
+        model.addAttribute("title", "Проекты");
         model.addAttribute("user", currentUser);
         model.addAttribute("projects", projects);
 

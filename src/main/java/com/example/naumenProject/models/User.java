@@ -27,6 +27,9 @@ public class User
     @Column(name = "user_email")
     private String email;
 
+    @Column(name = "user_firstname")
+    private String firstName;
+
     @Column(name = "user_surname")
     private String lastName;
 
@@ -46,6 +49,7 @@ public class User
         this.username = username;
         this.password = password;
         this.email = email;
+        this.firstName = firstName;
         this.lastName = lastName;
     }
 
@@ -54,6 +58,7 @@ public class User
         this.username = username;
         this.password = password;
         this.email = email;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.roleInProject = ProjectRole.valueOf(roleInProject).ordinal();
     }
@@ -96,7 +101,11 @@ public class User
     }
 
     public String getFirstName() {
-        return username;
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
