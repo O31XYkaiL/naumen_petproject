@@ -27,15 +27,12 @@ public class User
     @Column(name = "user_email")
     private String email;
 
-//    @Column(name = "username")
-//    private String firstName;
-
     @Column(name = "user_surname")
     private String lastName;
 
 
     @Column(name = "team_role")
-    private String roleInProject;
+    private Integer roleInProject;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role_team", joinColumns = @JoinColumn(name="user_id"))
@@ -49,7 +46,6 @@ public class User
         this.username = username;
         this.password = password;
         this.email = email;
-      //  this.firstName = firstName;
         this.lastName = lastName;
     }
 
@@ -58,18 +54,13 @@ public class User
         this.username = username;
         this.password = password;
         this.email = email;
-      //  this.firstName = firstName;
         this.lastName = lastName;
-        this.roleInProject = roleInProject;
+        this.roleInProject = ProjectRole.valueOf(roleInProject).ordinal();
     }
 
     public User()
     {
 
-    }
-
-    public User(String roleInProject) {
-        this.roleInProject = roleInProject;
     }
 
     public Long getId() {
@@ -104,13 +95,9 @@ public class User
         return password;
     }
 
-//    public String getFirstName() {
-//        return firstName;
-//    }
-//
-//    public void setFirstName(String firstName) {
-//        this.firstName = firstName;
-//    }
+    public String getFirstName() {
+        return username;
+    }
 
     public String getLastName() {
         return lastName;
@@ -138,7 +125,6 @@ public class User
     public void setRoleInProject(String roleInProject) {
         this.roleInProject = ProjectRole.valueOf(roleInProject).ordinal();
     }
-
 
     public void setActive(boolean b) {
     }

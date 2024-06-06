@@ -371,19 +371,4 @@ public class WebController {
 
         return new ResponseEntity<>(coverBytes, headers, HttpStatus.OK);
     }
-
-    @PostMapping(value = "/chooseTeamRole")
-    public String chooseTeamRole(@RequestParam("team_role") String roleInProject,
-                                 Authentication authentication) {
-
-        String username = authentication.getName();
-        var user = userService.getUserByUsername(username);
-
-        if (user != null) {
-            user.setRoleInProject(roleInProject);
-            userService.createUser(user);
-        }
-
-        return "redirect:/";
-    }
 }
