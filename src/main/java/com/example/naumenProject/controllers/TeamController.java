@@ -113,4 +113,19 @@ public class TeamController {
 
         return "redirect:/";
     }
+
+    @PostMapping(value = "/addUserToTeam")
+    public String addUserToTeam(@RequestParam("team_name") String teamName,
+                                @RequestParam("username") String username,
+                                Authentication authentication) {
+        var team = teamService.getTeamByName(teamName);
+        var user = userRepository.findUserByUsername(username);
+
+        if (team != null && user != null) {
+            team.addMember(user);
+            teamService.updateTeam(team);
+        }
+
+        return "redirect:/teams";
+    }
 }

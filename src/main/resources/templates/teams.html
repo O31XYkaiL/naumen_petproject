@@ -11,9 +11,11 @@
             <li><a href="/">Home</a></li>
             <li><a href="/categories">Categories</a></li>
             <li><a href="/projects">Projects</a></li>
+            <li><a href="/projectsByUser">ProjectsByUser</a></li>
             <li><a href="/ratings">Ratings</a></li>
             <li><a href="/search">Search</a></li>
             <li><a href="/teams">Teams</a></li>
+            <li><a href="/registration">Registration</a></li>
         </ul>
     </nav>
 </header>
@@ -52,6 +54,13 @@
 <form th:action="@{/leaveTeam}" method="post">
     <label for="team_name2">Название: <input type="text" id="team_name2" name="team_name"></label><br>
     <input type="submit" value="Покинуть">
+</form>
+
+<h1>Добавить пользователя в команду</h1>
+<form th:action="@{/addUserToTeam}" method="post">
+    <label for="team_name3">Название: <input type="text" id="team_name3" name="team_name"></label><br>
+    <label for="user_name">Пользователь: <input type="text" id="user_name" name="username"></label><br>
+    <input type="submit" value="Добавить">
 </form>
 </body>
 </html>
