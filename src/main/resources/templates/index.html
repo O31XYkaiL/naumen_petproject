@@ -4,19 +4,20 @@
     <title>Информация</title>
 </head>
 <body>
-    <h1>Информация</h1>
-    <p>ID: [[${user.getId()}]]</p>
-    <p>Логин: [[${user.username}]]</p>
-    <p>Имя: [[${user.firstName}]]</p>
-    <p>Фамилия: [[${user.lastName}]]</p>
-    <p>Почта: [[${user.getEmail()}]]</p>
-<!--    <p>Команда: [[${}]]</p>-->
-<!--    <p>Проект(ы): [[${}]]</p>-->
-    <p>Роль в проекте(ах): [[${user.getRoleInProject()}]]</p>
-    <h1>Изменить роль</h1>
-    <form th:action="@{/chooseTeamRole}" method="post">
-        <label for="name">Название: <input type="text" id="name" name="name"></label><br>
-        <input type="submit" value="Изменить">
-    </form>
+<h1>Информация</h1>
+<p>ID: [[${user.getId()}]]</p>
+<p>Логин: [[${user.username}]]</p>
+<p>ФИО: [[${user.lastName}]]</p>
+<p>Почта: [[${user.getEmail()}]]</p>
+<p>Команда: [[${user.getEmail()}]]</p>
+<!--    <p>Проект(ы): [[${user.getEmail()}]]</p>-->
+<!--    <p>Роль в проекте: [[${user.getRoleInProject()}]]</p>-->
+<h1>Изменить роль</h1>
+<form th:action="@{/chooseTeamRole}" method="post">
+    <!--        <input for="TeamLead">TeamLead <input type="checkbox" id="TeamLead" value="1"></input><br>-->
+    <!--        <input for="Frontend">Frontend <input type="checkbox" id="Frontend" value="1"></input><br>-->
+    <label for="roleInProject">Роль: <input type="text" id="roleInProject" name="roleInProject"></label><br>
+    <input type="submit" value="Изменить">
+</form>
 </body>
 </html>

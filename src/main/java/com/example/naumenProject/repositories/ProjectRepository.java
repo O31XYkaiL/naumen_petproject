@@ -26,9 +26,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long>
     @Query("SELECT p FROM Project p WHERE p.projectName = :name")
     Project getProjectByName(@Param("name") String name);
 
-//    @Query("SELECT p FROM Project p WHERE p.projectCategory = :category_projects")
-//    List<Project> findProjectsByProjectCategory(@Param("category_projects") String category);
-
     @Query("SELECT p FROM Project p WHERE p.projectCategory = :category_projects")
     List<Project> getProjectsByProjectCategory(@Param("category_projects") String category);
+
 }
